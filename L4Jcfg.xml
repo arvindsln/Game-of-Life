@@ -1,0 +1,35 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>console</headerType>
+  <jar>C:\GameOfLife\GameOfLife.jar</jar>
+  <outfile>C:\GameOfLife\GameOfLife.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <icon>resources\file_document_paper_green_g18359.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <dontUsePrivateJres>false</dontUsePrivateJres>
+    <initialHeapSize>64</initialHeapSize>
+    <maxHeapSize>512</maxHeapSize>
+  </jre>
+  <versionInfo>
+    <fileVersion>0.1.0.0</fileVersion>
+    <txtFileVersion>ver 0.1</txtFileVersion>
+    <fileDescription>Conway&apos;s Game Of Life</fileDescription>
+    <copyright>Pavels Trifonovs 2011</copyright>
+    <productVersion>0.1.0.0</productVersion>
+    <txtProductVersion>ver 0.1</txtProductVersion>
+    <productName>Conway&apos;s Game Of Life</productName>
+    <companyName></companyName>
+    <internalName>GOL</internalName>
+    <originalFilename>GameOfLife.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>
