@@ -1,8 +1,13 @@
-Readme
-------------
-I have written only the game core and bare minimum of controls to test it in debug mode. All output goes to standard console. Controls are done with Java Swing. I'm planning to do Java Swing front-end.
-
 Conway's Game of Life
+------------
+I have written only the game core and bare minimum of controls to test it in debug mode. 
+All output goes to standard console. Controls are done with Java Swing and I'm planning to do Java Swing front-end. 
+
+Version
+-----------
+0.1 initial commit
+
+Game rules
 -------------------------
 The universe of the Game of Life is an infinite two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, alive or dead. Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent.
 
