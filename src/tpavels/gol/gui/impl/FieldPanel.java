@@ -64,7 +64,7 @@ public class FieldPanel extends JPanel implements Constants {
 //			default:
 //				//gfx2D.setPaint(Color.PINK);
 //				System.err.println("Incorrect cell(X:"+cell.getX()+" Y:"+cell.getY()
-//																		+") state: "+cell.getState());
+//									+") state: "+cell.getState());
 //				break;
 //			}
 //

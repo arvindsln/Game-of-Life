@@ -26,7 +26,7 @@ public class MainGUIframe implements Constants {
 	 * @param insets component border
 	 */
 	public static void addUIComponent(JPanel jp, JComponent jc, int loc, int type,
-																		 int[] decart, Insets insets){
+							 	int[] decart, Insets insets){
 		GridBagConstraints c = new GridBagConstraints();
 		c.anchor = loc;
 		c.fill = type;
@@ -38,11 +38,11 @@ public class MainGUIframe implements Constants {
 		/*
 		 * weightx and weighty are depended on type, see below
 		 * 
-		 * type									{weightx, weighty}			
+		 * type					{weightx, weighty}			
 		 * ---------------------------------------------------------------------------					
-		 * GridBagConstraints.NONE 		 = 0 == {0.0	, 0.0	 }	# 4-0 = 4 == 1|00|
-		 * GridBagConstraints.BOTH 		 = 1 ==	{1.0	, 1.0	 }  # 4-1 = 3 == 0|11|
-		 * GridBagConstraints.HORIZONTAL = 2 ==	{1.0	, 0.0	 } 	# 4-2 = 2 == 0|10|
+		 * GridBagConstraints.NONE 	 = 0 == {0.0	, 0.0	 }  # 4-0 = 4 == 1|00|
+		 * GridBagConstraints.BOTH 	 = 1 ==	{1.0	, 1.0	 }  # 4-1 = 3 == 0|11|
+		 * GridBagConstraints.HORIZONTAL = 2 ==	{1.0	, 0.0	 }  # 4-2 = 2 == 0|10|
 		 * GridBagConstraints.VERTICAL 	 = 3 ==	{0.0	, 1.0	 }  # 4-3 = 1 == 0|01|
 		 */
 		c.weightx = (double)(((4 - type)& 2) >> 1);
