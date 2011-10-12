@@ -53,13 +53,13 @@ public class FieldImpl implements Field {
 		if (cellsToCreate <= 0) cellsToCreate = NUMBER_RANDOM_CELLS;
 		Random randomXGenerator = new Random();
 		Random randomYGenerator = new Random();
-		int max = Math.min(ROWS,COLS);
+//		int max = Math.min(ROWS,COLS);
 		int randomX, randomY;
 		Cell cell = null;
 		for (int idx = 1; idx <= cellsToCreate; idx++){
 			do {
-				randomX = randomXGenerator.nextInt(max);
-				randomY = randomYGenerator.nextInt(max);
+				randomX = randomXGenerator.nextInt(ROWS);
+				randomY = randomYGenerator.nextInt(COLS);
 				cell = field[randomX][randomY];
 			} while (cell.isAlive());
 			cells++;
@@ -141,7 +141,7 @@ public class FieldImpl implements Field {
 		}
 		return sbuf.toString();
 	}
-
+	
 	@Override
 	public boolean updateChanges() {
 		boolean updated = false;
@@ -197,4 +197,5 @@ public class FieldImpl implements Field {
 	private boolean isNeighbour(Cell cell) {
 		return cell.isAlive() || cell.isDying();
 	}
+	
 }

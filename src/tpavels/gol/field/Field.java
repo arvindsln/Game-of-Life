@@ -74,4 +74,5 @@ public interface Field extends Iterable<Cell>, Constants{
 	 * @return number of neighbours around this cell
 	 */
 	public int getNeighbours(Cell cell);
+	
 }

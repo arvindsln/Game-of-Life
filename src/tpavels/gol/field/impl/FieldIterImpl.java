@@ -28,9 +28,12 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	
 	@Override
 	public boolean hasNext() {
-		if (nextX == COLS - 1 && nextY == ROWS - 1){
-			nextX = 0;
-			nextY = 0;
+		boolean isBottomRight = nextY >= COLS-1 && nextX > ROWS -1;
+		if (isBottomRight){
+//			System.err.println("hasNext()(3): nextY="+nextY+", nextX="+nextX);
+//			System.err.println("hasNext()(4): nextY=_0, nextX=_0");
+			nextX = START_POINT;
+			nextY = START_POINT;
 			return false;
 		}
 		return true;
@@ -53,7 +56,7 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 
 	@Override
 	public void remove() {
-		// TODO implement iterator remove()
+		System.err.println("iterator.remove() is not implemented");
 	}
 	
 	@Override
@@ -83,8 +86,10 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	private void nextCell() {
 		if (nextY != COLS-1) {
 			nextY++;
+//			System.err.println("nextCell(): nextY++="+nextY+", nextX="+nextX);
 		} else {
 			nextX++;
+//			System.err.println("nextCell(): nextY="+nextY+", nextX++="+nextX);
 			nextY = START_POINT;
 		}
 	}

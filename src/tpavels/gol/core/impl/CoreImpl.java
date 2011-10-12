@@ -5,14 +5,19 @@ import tpavels.gol.field.Cell;
 import tpavels.gol.field.Field;
 import tpavels.gol.field.FieldIter;
 import tpavels.gol.field.impl.FieldImpl;
+import tpavels.gol.gui.GUIManager;
+import tpavels.gol.gui.impl.GUIManagerImpl;
 
 
-public class CoreImpl implements Core, Runnable {
+public class CoreImpl implements Core {
 	
-	private Field field;
-	private FieldIter<Cell> fieldIter;
+	private Field field = null;
+	private FieldIter<Cell> fieldIter = null;
+	private GUIManager guiManager = null;
 	private int generation = 0;
-	private GameState state;
+	private GameState state = GameState.PAUSE;
+	private boolean isWorking = false;
+	
 	
 	@Override
 	public void pause() {
@@ -22,13 +27,14 @@ public class CoreImpl implements Core, Runnable {
 	@Override
 	public void random() {
 		field.createRandomLiveCells();
-		debugPrint(PrintLevel.FULL); // debug output
+		guiManager.reDraw();
+		//debugPrint(PrintLevel.FULL); // debug output
 	}
 
 	@Override
 	public void random(int n) {
 		field.createRandomLiveCells(n);
-		debugPrint(PrintLevel.FULL); // debug output
+		//debugPrint(PrintLevel.FULL); // debug output
 	}
 
 	@Override
@@ -36,16 +42,19 @@ public class CoreImpl implements Core, Runnable {
 		field.clearField();
 		generation = 0;
 		state = GameState.PAUSE;
-		debugPrint(PrintLevel.FIELD); // debug output
+		guiManager.reDraw();
+		//debugPrint(PrintLevel.FIELD); // debug output
 	}
 		
-	@Override
-	public void run() {
+	public void lifeLoop() {
 		while (true) {
 			switch (state) {
 			case RUN:
 				if (fieldIter.isEmpty()) debugPrint(PrintLevel.EMPTY);
-				else debugPrint(PrintLevel.FULL); // debug output
+				else {
+					guiManager.reDraw();
+					//debugPrint(PrintLevel.FULL); // debug output
+				}
 				
 				try {
 					Thread.sleep(TICK);
@@ -74,9 +83,15 @@ public class CoreImpl implements Core, Runnable {
 		field = new FieldImpl();
 		fieldIter = field.iterator();
 		state = GameState.PAUSE;
-		this.run();
+		renderGUI();
+		lifeLoop();
 	}
 	
+	private void renderGUI() {
+		this.guiManager = new GUIManagerImpl(this, field);
+		guiManager.show();
+	}
+
 	@Override
 	public void step() {
 		state = GameState.PAUSE;
@@ -94,13 +109,13 @@ public class CoreImpl implements Core, Runnable {
 	}
 
 	private void finish() {
-		debugPrint(PrintLevel.FULL); // debug output
+		guiManager.reDraw();
+		//debugPrint(PrintLevel.FULL); // debug output
 		state = GameState.PAUSE;
 		generation = -1;
 	}
 
 	private void nextGeneration() {
-		
 /* 
  * 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
  * 2. Any live cell with two or three live neighbours lives on to the next generation.
@@ -108,25 +123,25 @@ public class CoreImpl implements Core, Runnable {
  * 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
  */
 		int neighbours = 0;
-		if(!fieldIter.isEmpty()) {
-			
-			while(fieldIter.hasNext()){
-				Cell cell = fieldIter.next();
-				neighbours = field.getNeighbours(cell);
-				if (cell.isDead()) {
-					 if (neighbours == 3) field.setLife(cell);
-				} else {
-					if (neighbours < 2) field.setDead(cell);
-					else if (neighbours  > 3) field.setDead(cell);
+			if(!fieldIter.isEmpty()) {
+//				System.err.println(">>>>>>>>>>core");
+				while(fieldIter.hasNext()){
+					Cell cell = fieldIter.next();
+					neighbours = field.getNeighbours(cell);
+					if (cell.isDead()) {
+						if (neighbours == 3) field.setLife(cell);
+					} else {
+						if (neighbours < 2) field.setDead(cell);
+						else if (neighbours  > 3) field.setDead(cell);
 					}
 				}
-			
-			if (!field.updateChanges()) finish();
-			generation++; // generation is created
-		} else {
-			// everyone is dead
-			state = GameState.PAUSE; 
-		}
+//				System.err.println(">>>>>>>>>>core-end");
+				if (!field.updateChanges()) finish();
+				generation++; // generation is created
+			} else {
+				// everyone is dead
+				state = GameState.PAUSE; 
+			}
 	}
 
 	private void debugPrint(PrintLevel pLvl){

@@ -2,7 +2,6 @@ package tpavels.gol;
 
 import tpavels.gol.core.Core;
 import tpavels.gol.core.impl.CoreImpl;
-import tpavels.gol.gui.Controls;
 
 
 /**
@@ -18,14 +17,6 @@ public class GameOfLife {
 	public static void main(String[] args) {
 		
 		final Core game = new CoreImpl();
-		
-		Thread controlsThread = new Thread(){
-			public void run() {   
-                Controls controls = new Controls();
-                controls.startup(game);
-			};
-		};
-		controlsThread.start();
 		game.startup();
 	}
 }
