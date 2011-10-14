@@ -14,7 +14,7 @@ public interface GUIManager {
 
 	
 	/**
-	 * The end. This generation if doomed.
+	 * The end. This generation is doomed.
 	 */
 	public void end();
 
