@@ -30,8 +30,6 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	public boolean hasNext() {
 		boolean isBottomRight = nextY >= COLS-1 && nextX > ROWS -1;
 		if (isBottomRight){
-//			System.err.println("hasNext()(3): nextY="+nextY+", nextX="+nextX);
-//			System.err.println("hasNext()(4): nextY=_0, nextX=_0");
 			nextX = START_POINT;
 			nextY = START_POINT;
 			return false;
@@ -86,10 +84,8 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	private void nextCell() {
 		if (nextY != COLS-1) {
 			nextY++;
-//			System.err.println("nextCell(): nextY++="+nextY+", nextX="+nextX);
 		} else {
 			nextX++;
-//			System.err.println("nextCell(): nextY="+nextY+", nextX++="+nextX);
 			nextY = START_POINT;
 		}
 	}

@@ -12,4 +12,10 @@ public interface GUIManager {
 	 */
 	public void reDraw();
 
+	
+	/**
+	 * The end. This generation if doomed.
+	 */
+	public void end();
+
 }

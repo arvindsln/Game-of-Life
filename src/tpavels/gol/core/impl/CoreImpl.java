@@ -16,8 +16,6 @@ public class CoreImpl implements Core {
 	private GUIManager guiManager = null;
 	private int generation = 0;
 	private GameState state = GameState.PAUSE;
-	private boolean isWorking = false;
-	
 	
 	@Override
 	public void pause() {
@@ -26,15 +24,12 @@ public class CoreImpl implements Core {
 	
 	@Override
 	public void random() {
-		field.createRandomLiveCells();
-		guiManager.reDraw();
-		//debugPrint(PrintLevel.FULL); // debug output
+		state = GameState.RANDOM;
 	}
 
 	@Override
 	public void random(int n) {
 		field.createRandomLiveCells(n);
-		//debugPrint(PrintLevel.FULL); // debug output
 	}
 
 	@Override
@@ -43,28 +38,32 @@ public class CoreImpl implements Core {
 		generation = 0;
 		state = GameState.PAUSE;
 		guiManager.reDraw();
-		//debugPrint(PrintLevel.FIELD); // debug output
 	}
-		
+
 	public void lifeLoop() {
 		while (true) {
 			switch (state) {
+			case RANDOM:
+				field.createRandomLiveCells();
+				guiManager.reDraw();
+				pause();
+				break;
 			case RUN:
-				if (fieldIter.isEmpty()) debugPrint(PrintLevel.EMPTY);
-				else {
-					guiManager.reDraw();
-					//debugPrint(PrintLevel.FULL); // debug output
-				}
-				
+				nextGeneration();
+				guiManager.reDraw();
 				try {
 					Thread.sleep(TICK);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				nextGeneration();
 				break;
 			case PAUSE:
-				// PAUSE 
+				// PAUSE
+				break;
+			case STEP:
+				nextGeneration();
+				guiManager.reDraw();
+				pause();
 				break;
 			default:
 				break;
@@ -94,8 +93,7 @@ public class CoreImpl implements Core {
 
 	@Override
 	public void step() {
-		state = GameState.PAUSE;
-		nextGeneration();
+		state = GameState.STEP;
 	}
 
 	@Override
@@ -108,13 +106,6 @@ public class CoreImpl implements Core {
 		return str.toString();
 	}
 
-	private void finish() {
-		guiManager.reDraw();
-		//debugPrint(PrintLevel.FULL); // debug output
-		state = GameState.PAUSE;
-		generation = -1;
-	}
-
 	private void nextGeneration() {
 /* 
  * 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
@@ -124,7 +115,6 @@ public class CoreImpl implements Core {
  */
 		int neighbours = 0;
 			if(!fieldIter.isEmpty()) {
-//				System.err.println(">>>>>>>>>>core");
 				while(fieldIter.hasNext()){
 					Cell cell = fieldIter.next();
 					neighbours = field.getNeighbours(cell);
@@ -135,12 +125,17 @@ public class CoreImpl implements Core {
 						else if (neighbours  > 3) field.setDead(cell);
 					}
 				}
-//				System.err.println(">>>>>>>>>>core-end");
-				if (!field.updateChanges()) finish();
-				generation++; // generation is created
+				boolean isNewGeneration = field.updateChanges();
+				if (isNewGeneration){
+					generation++; // generation is created
+				} else {
+					guiManager.end();
+				}
 			} else {
 				// everyone is dead
-				state = GameState.PAUSE; 
+				guiManager.reDraw();
+				guiManager.end();
+				pause();
 			}
 	}
 

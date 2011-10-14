@@ -11,8 +11,8 @@
 	<property name="main-class" value="tpavels.gol.GameOfLife" />
 	
 	<property name="filename" value="${release.dir}/GameOfLife.exe" />
-	<property name="fileversion" value="0.1.0.0" />
-	<property name="txtfileversion" value="ver 0.1" />
+	<property name="fileversion" value="0.3.3.0" />
+	<property name="txtfileversion" value="ver 0.3.3" />
 
 	<path id="classpath">
 		<fileset dir="." includes="**/*.jar" />
@@ -41,7 +41,7 @@
 				<attribute name="Main-Class" value="${main-class}" />
 				<attribute name="Class-Path" value="." />
 			</manifest>
-			<fileset dir="${build.dir}"/>
+			<fileset dir="${classes.dir}"/>
 		</jar>
 	</target>
 

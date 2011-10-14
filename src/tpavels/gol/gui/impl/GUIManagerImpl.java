@@ -10,9 +10,9 @@ import tpavels.gol.gui.GUIManager;
 
 public class GUIManagerImpl implements Constants, GUIManager {
 	
-	MainGUIThread mainUI = null;
-	Core game = null;
-	Field field = null;
+	private Core game = null;
+	private Field field = null;
+	private MainGUIframe mainUIframe = null;
 	
 	public GUIManagerImpl(Core game, Field field) {
 		this.game = game;
@@ -27,14 +27,18 @@ public class GUIManagerImpl implements Constants, GUIManager {
 	
 	@Override
 	public void reDraw(){
-		mainUI.reDraw();
+		mainUIframe.reDraw();
+	}
+	
+	@Override
+	public void end() {
+		mainUIframe.end();
 	}
 
 	private void startMainGUI() {
-		mainUI = new MainGUIThread();
-		mainUI.setup(field, game);
-		Thread mainUIThread = new Thread(mainUI, "mainGUI");
-		mainUIThread.start();
+		this.mainUIframe = new MainGUIframe();
+		this.mainUIframe.createGUI(game, field);
+		this.mainUIframe.reDraw();
 	}
 	
 	private void setupLookAndFeel() {
@@ -52,5 +56,4 @@ public class GUIManagerImpl implements Constants, GUIManager {
 			e.printStackTrace();
 		}
 	}
-
 }

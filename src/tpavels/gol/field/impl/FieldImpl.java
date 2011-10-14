@@ -11,6 +11,11 @@ public class FieldImpl implements Field {
 
 	private int cells = 0; // life cells on the field
 	private Cell[][] field = null;
+	
+	/* 
+	 * TODO implement two array and swap them, rather then update one
+	 * or maybe hold all alive cell in the dedicated array...
+	 */
 
 	/**
 	 * Populate field with new dead cells
@@ -49,11 +54,10 @@ public class FieldImpl implements Field {
 	public void createRandomLiveCells(int cellsToCreate) {
 
 		if (isCellLimit(cellsToCreate)) return;
-
-		if (cellsToCreate <= 0) cellsToCreate = NUMBER_RANDOM_CELLS;
+		updateChanges();
+		if (cellsToCreate < 0) cellsToCreate = NUMBER_RANDOM_CELLS;
 		Random randomXGenerator = new Random();
 		Random randomYGenerator = new Random();
-//		int max = Math.min(ROWS,COLS);
 		int randomX, randomY;
 		Cell cell = null;
 		for (int idx = 1; idx <= cellsToCreate; idx++){
@@ -62,8 +66,8 @@ public class FieldImpl implements Field {
 				randomY = randomYGenerator.nextInt(COLS);
 				cell = field[randomX][randomY];
 			} while (cell.isAlive());
-			cells++;
 			field[randomX][randomY].setLife();
+			cells++;
 		}
 	}
 
@@ -170,24 +174,39 @@ public class FieldImpl implements Field {
 		return updated;
 	}
 
+	
+	//FIXME random limits
+	private final int CAN_HOLD_CELLS = (COLS-1) * (ROWS-1);
 	/**
-	 * No more then ~50% of field can be revived
+	 * No more then ~50% of field can be revived (turned off!)
 	 * @param cellsToCreate number of random cells to create
 	 * @return true is there is no place to revive that number of cells
 	 */
 	private boolean isCellLimit(int cellsToCreate) {
-		int canHoldCells = (COLS-1) * (ROWS-1);
+		int canHold = CAN_HOLD_CELLS - cells;
 		// no more then field can hold
-		if (cellsToCreate >= canHoldCells) {
+		if (cellsToCreate > canHold) {
 			System.err.println("Field cannot revive more cells. There are " 
-					+ cellsToCreate + ", but field " );
+					+ cells + " alive cell; want to create "
+					+ cellsToCreate + " more cells, but field can hold "+ canHold );
+			setAlltoLife();
 			return true;
 		}
 		// no more then 50% of field
-		float cellPercent = ((float)cells / canHoldCells);
-		if (cellPercent > 0.5) return true;
-
+		//float cellPercent = ((float)cells / canHoldCells);
+		//if (cellPercent > 0.5) return true;
 		return false;
+	}
+
+	private void setAlltoLife() {
+		for(int i = 0; i < ROWS; i++){
+			for(int j = 0; j < COLS; j++){
+				if (field[i][j].isDead()){
+					field[i][j].setLife();
+					cells++;
+				}
+			}
+		}
 	}
 
 	/**
