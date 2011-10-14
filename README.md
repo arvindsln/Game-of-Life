@@ -19,17 +19,18 @@ Game rules source: [wikipedia]
 
 Version notes
 ========
-## 0.3.3
+## 0.3.3 (14/10/2011)
 * New implementation of GUI
 * Fixed thread issues
 * Added STEP button
 * New behaviour of controls buttons
 * Ant build is updated
 
-## 0.2 
+## 0.2 (12/10/2011)
 * added GUI, implemented as GridBagLayout
 * many issues with GUI, work in progress...
 * ant build is not updated
 * problem with threads, Core thread and GUI thread read/write the same data object (Field) simultaneously, cause corrupt data.
 
-## 0.1 initial commit
+## 0.1 (7/10/2011) 
+* initial commit
