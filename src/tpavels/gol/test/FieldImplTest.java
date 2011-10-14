@@ -1,13 +1,13 @@
 package tpavels.gol.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import tpavels.gol.constants.Constants;
 import tpavels.gol.field.Cell;
-import tpavels.gol.field.impl.CellImpl;
 import tpavels.gol.field.impl.FieldImpl;
 
 public class FieldImplTest implements Constants {

@@ -8,8 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.sun.org.apache.bcel.internal.generic.CPInstruction;
-
 import tpavels.gol.constants.Constants;
 import tpavels.gol.core.Core;
 import tpavels.gol.field.Field;

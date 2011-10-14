@@ -1,6 +1,7 @@
 package tpavels.gol.field;
 
 import java.util.Iterator;
+
 import tpavels.gol.constants.Constants;
 
 public interface FieldIter<E> extends Iterator<Cell>,  Constants {
