@@ -1,5 +1,7 @@
 package tpavels.gol.field;
 
+import java.util.Set;
+
 import tpavels.gol.constants.Constants;
 
 
@@ -8,12 +10,12 @@ public interface Cell extends Constants {
 	/**
 	 * @return {@link Cell} column number (start from 0)
 	 */
-	public int getX();
+	public int getRow();
 
 	/**
 	 * @return {@link Cell} row number (start from 0)
 	 */
-	public int getY();
+	public int getColumn();
 
 	/**
 	 * toBeDEAD means, that cell was alive and will be dead after field overall update,
@@ -68,5 +70,30 @@ public interface Cell extends Constants {
 	 *  but will be revived in the next
 	 */
 	public boolean isBorn();
-
+	
+	/**
+	 * @return set of all neighbour cells
+	 */
+	public Set<Cell> neighbourCells();
+	
+	/**
+	 * Adds new alive neighbour near cell
+	 */
+	public void addNeighbour();
+	
+	/**
+	 * Removes one alive neighbour near this cell
+	 */
+	public void removeNeighbour();
+	
+	/**
+	 * @return number of alive neighbours
+	 */
+	public int getNeighbour();
+	
+	/**
+	 * Sets alive neighbour counter to zero (0)
+	 */
+	public void resetNeighbourCounter();
+	
 }

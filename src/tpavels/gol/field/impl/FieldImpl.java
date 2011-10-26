@@ -1,7 +1,11 @@
 package tpavels.gol.field.impl;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
+import tpavels.gol.constants.Constants;
 import tpavels.gol.field.Cell;
 import tpavels.gol.field.Field;
 import tpavels.gol.field.FieldIter;
@@ -9,13 +13,10 @@ import tpavels.gol.field.FieldIter;
 
 public class FieldImpl implements Field {
 
-	private int cells = 0; // life cells on the field
+	private static final int CAN_HOLD_CELLS = (COLS) * (ROWS);
 	private Cell[][] field = null;
-	
-	/* 
-	 * TODO implement two array and swap them, rather then update one
-	 * or maybe hold all alive cell in the dedicated array...
-	 */
+	private int generation = 0;
+	private Set<Cell> lifecells = null;
 
 	/**
 	 * Populate field with new dead cells
@@ -23,110 +24,146 @@ public class FieldImpl implements Field {
 	 */
 	public FieldImpl() {
 		this.createField();
+		lifecells = new HashSet<Cell>();
 	}
 
 	@Override
 	public void clearField() {
-		for(int i = 0; i < ROWS; i++){
-			for(int j = 0; j < COLS; j++){
-				field[i][j].setDead();
+		for(int row = 0; row < ROWS; row++){
+			for(int column = 0; column < COLS; column++){
+				field[row][column].setDead();
+				field[row][column].resetNeighbourCounter();
 			}
 		}
-		cells = 0;
+		lifecells.clear();
+		generation = 0;
 	}
 
 	@Override
-	public void createField() {
-		field = new Cell[ROWS][COLS];
-		for(int i = 0; i < ROWS; i++){
-			for(int j = 0; j < COLS; j++){
-				field[i][j] = new CellImpl(i, j);
-			}
-		}
+	public void createRandomLifeCells() {
+		this.createRandomLifeCells(NUMBER_RANDOM_CELLS);
 	}
 
 	@Override
-	public void createRandomLiveCells() {
-		this.createRandomLiveCells(NUMBER_RANDOM_CELLS);
-	}
-
-	@Override
-	public void createRandomLiveCells(int cellsToCreate) {
-
+	public void createRandomLifeCells(int cellsToCreate) {
+		
 		if (isCellLimit(cellsToCreate)) return;
-		updateChanges();
 		if (cellsToCreate < 0) cellsToCreate = NUMBER_RANDOM_CELLS;
 		Random randomXGenerator = new Random();
 		Random randomYGenerator = new Random();
-		int randomX, randomY;
+		int randomRow, randomColumn;
 		Cell cell = null;
 		for (int idx = 1; idx <= cellsToCreate; idx++){
 			do {
-				randomX = randomXGenerator.nextInt(ROWS);
-				randomY = randomYGenerator.nextInt(COLS);
-				cell = field[randomX][randomY];
+				randomRow = randomXGenerator.nextInt(ROWS);
+				randomColumn = randomYGenerator.nextInt(COLS);
+				cell = field[randomRow][randomColumn];
 			} while (cell.isAlive());
-			field[randomX][randomY].setLife();
-			cells++;
+			addCell(cell);
 		}
+		
 	}
 
 	@Override
-	public Cell getCell(int x, int y) {
-		boolean noBordersAround  = (x > START_POINT && x < ROWS-1) 
-				&& (y > START_POINT && y < COLS-1);
-		if (noBordersAround){
-			return field[x][y];
-		}
-		if (x < START_POINT) x = ROWS - 1;
-		if (y < START_POINT) y = COLS - 1;
-
-		if (x >= ROWS) x = START_POINT;
-		if (y >= COLS) y = START_POINT;
-
-		return field[x][y];
+	public Set<Cell> getAliveCells() {
+		return lifecells;
 	}
 
-	public int getAliveCells() {
-		return cells;
-	}
-
-	public int getNeighbours(Cell cell) {
-		int x = cell.getX();
-		int y = cell.getY();
-		int n = 0;
-		if (isNeighbour(this.getCell(x-1, y))) n++;
-		if (isNeighbour(this.getCell(x-1, y+1))) n++;
-		if (isNeighbour(this.getCell(x, y+1))) n++;
-		if (isNeighbour(this.getCell(x+1, y+1))) n++;
-		if (isNeighbour(this.getCell(x+1, y))) n++;
-		if (isNeighbour(this.getCell(x+1, y-1))) n++;
-		if (isNeighbour(this.getCell(x, y-1))) n++;
-		if (isNeighbour(this.getCell(x-1, y-1))) n++;
-		return n;
+	@Override
+	public int getNumberOfAliveCells() {
+		return lifecells.size();
 	}
 
 	@Override
 	public FieldIter<Cell> iterator() {
 		return new FieldIterImpl<Cell>(this);
 	}
-
+	
 	@Override
-	public void setDead(Cell cell) {
-		field[cell.getX()][cell.getY()].setDying();
+	public void addAliveCell(int row, int column) {
+		Cell cell = getCell(row, column);
+		addCell(cell);
 	}
 
 	@Override
+	public boolean nextGeneration() {
+	/* 
+	 * 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+	 * 2. Any live cell with two or three live neighbours lives on to the next generation.
+	 * 3. Any live cell with more than three live neighbours dies, as if by overcrowding.
+	 * 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
+	 */
+		
+		int neighbours = 0;
+		FieldIter<Cell> fieldIter = this.iterator();
+		if(fieldIter.isEmpty()) {
+			return false;
+		}
+
+		while(fieldIter.hasNext()){
+			Cell cell = fieldIter.next();
+			neighbours = cell.getNeighbour();
+			if (cell.isDead()) {
+				if (neighbours == 3) setLife(cell);
+			} else {
+				if (neighbours < 2) setDead(cell);
+				else if (neighbours  > 3) setDead(cell);
+			}
+		}
+		boolean isNewGeneration = updateChanges();
+		if (isNewGeneration){
+			generation ++; 
+			return true;
+		} else return false;
+	}
+	
+	/**
+	 * Get {@link Cell} from board. Left and right edges of the {@link Field} are stitched together, 
+	 * and the top and bottom edges also. 
+	 * 
+	 * @param row field row (start from -1 to {@link Constants#ROWS}, including)
+	 * @param column field column (start from -1 to {@link Constants#COLS}, including)
+	 * @return Cell
+	 */
+	public Cell getCell(int row, int column) {
+		boolean noBordersAround  = (row > START_POINT && row < ROWS-1) 
+				&& (column > START_POINT && column < COLS-1);
+		if (noBordersAround){
+			return field[row][column];
+		}
+		if (row < START_POINT) row = ROWS - 1;
+		if (column < START_POINT) column = COLS - 1;
+		
+		if (row >= ROWS) row = START_POINT;
+		if (column >= COLS) column = START_POINT;
+		
+		return field[row][column];
+	}
+	
+	/**
+	 * Set {@link Cell} to dying
+	 * @param cell Object to set
+	 * @see Cell#setDying()
+	 */
+	public void setDead(Cell cell) {
+		field[cell.getRow()][cell.getColumn()].setDying();
+	}
+	
+	/**
+	 * Set {@link Cell} to born
+	 * @param cell Object to set
+	 * @see Cell#setBorn()
+	 */
 	public void setLife(Cell cell) {
-		field[cell.getX()][cell.getY()].setBorn();
+		field[cell.getRow()][cell.getColumn()].setBorn();
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer sbuf = new StringBuffer();
-		for(int i = 0; i < ROWS; i++){
-			for(int j = 0; j < COLS; j++){
-				switch(this.field[i][j].getState()){
+		for(int row = 0; row < ROWS; row++){
+			for(int column = 0; column < COLS; column++){
+				switch(this.field[row][column].getState()){
 				case toBeDEAD:
 					sbuf.append(toBeDEAD_CELL_DRAW);
 					break;
@@ -146,75 +183,131 @@ public class FieldImpl implements Field {
 		return sbuf.toString();
 	}
 	
-	@Override
-	public boolean updateChanges() {
-		boolean updated = false;
-		for(int i = 0; i < ROWS; i++){
-			for(int j = 0; j < COLS; j++){
-				switch(field[i][j].getState()){
-				case toBeDEAD:
-					field[i][j].setDead();
-					cells--;
-					updated = true;
-					break;
-				case toBeLIFE:
-					field[i][j].setLife();
-					cells++;
-					updated = true;
-					break;
-				case DEAD:
-					// do nothing
-					break;
-				case LIFE:
-					// do nothing
-					break;
-				}
-			}
-		}
-		return updated;
+	/**
+	 * Makes a cell alive and updates its neighbours, incrementing neighbour counter by 1
+	 * @param cell to make alive again
+	 * @see #addNeighbours(Cell)
+	 */
+	private void addCell(Cell cell) {
+		cell.setLife();
+		addNeighbours(cell);
+		lifecells.add(cell);
+	}
+	
+	/**
+	 * Kills cells and updates its neighbours, decrementing neighbour counter by 1
+	 * @param cell
+	 * @see #removeNeighbours(Cell)
+	 */
+	private void removeCell(Cell cell) {
+		cell.setDead();
+		removeNeighbours(cell);
+		lifecells.remove(cell);
 	}
 
-	
-	//FIXME random limits
-	private final int CAN_HOLD_CELLS = (COLS-1) * (ROWS-1);
 	/**
-	 * No more then ~50% of field can be revived (turned off!)
+	 * When a cell is reborn all its neighbours cell neighbour counter need to be incremented by 1
+	 * @param cell that was born in the neighborhood 
+	 */
+	private void addNeighbours(Cell cell) {
+
+		Iterator<Cell> neighbours = cell.neighbourCells().iterator();
+		while (neighbours.hasNext()) {
+			Cell cellNeighbour = neighbours.next();
+			cellNeighbour = getCell(cellNeighbour.getRow(), cellNeighbour.getColumn());
+			cellNeighbour.addNeighbour();
+		}
+
+	}
+	
+	
+	/**
+	 * When a cell is dead all its neighbours cell neighbour counter need to be decremented by 1
+	 * @param cell
+	 */
+	private void removeNeighbours(Cell cell) {
+		Iterator<Cell> iterator = cell.neighbourCells().iterator();
+		while(iterator.hasNext()){
+			Cell next = iterator.next();
+			next = getCell(next.getRow(), next.getColumn());
+			next.removeNeighbour();
+		}
+	}
+	
+	/**
+	 * Creates new cells objects on the field and set them to dead
+	 */
+	private void createField() {
+		field = new Cell[ROWS+2][COLS+2];
+		for(int row = 0; row < ROWS; row++){
+			for(int column = 0; column < COLS; column++){
+				field[row][column] = new CellImpl(row, column);
+			}
+		}
+	}
+
+	/**
+	 * RandomLifeCells helper, checks limits
 	 * @param cellsToCreate number of random cells to create
 	 * @return true is there is no place to revive that number of cells
 	 */
 	private boolean isCellLimit(int cellsToCreate) {
-		int canHold = CAN_HOLD_CELLS - cells;
+		int canHold = CAN_HOLD_CELLS - getNumberOfAliveCells();
 		// no more then field can hold
 		if (cellsToCreate > canHold) {
 			System.err.println("Field cannot revive more cells. There are " 
-					+ cells + " alive cell; want to create "
+					+ getNumberOfAliveCells() + " alive cell; want to create "
 					+ cellsToCreate + " more cells, but field can hold "+ canHold );
 			setAlltoLife();
 			return true;
 		}
-		// no more then 50% of field
-		//float cellPercent = ((float)cells / canHoldCells);
-		//if (cellPercent > 0.5) return true;
 		return false;
 	}
+	
 
+	/**
+	 * RandomLifeCells helper, revive all remaining cells on the field
+	 */
 	private void setAlltoLife() {
-		for(int i = 0; i < ROWS; i++){
-			for(int j = 0; j < COLS; j++){
-				if (field[i][j].isDead()){
-					field[i][j].setLife();
-					cells++;
+		for(int row = 0; row < ROWS; row++){
+			for(int column = 0; column < COLS; column++){
+				if (field[row][column].isDead()){
+					addCell(field[row][column]);
 				}
 			}
 		}
 	}
-
-	/**
-	 * @param cell to check
-	 * @return true if the cell was alive in the last generation
-	 */
-	private boolean isNeighbour(Cell cell) {
-		return cell.isAlive() || cell.isDying();
-	}
 	
+	/**
+	 * Updates all changes to the field. 
+	 * Sets all dying cells to dead one,
+	 * all born to alive
+	 * @return true if at least one cell is changed
+	 */
+	private boolean updateChanges() {
+		boolean updated = false;
+		for(int row = 0; row < ROWS; row++){
+			for(int column = 0; column < COLS; column++){
+					Cell currentCell = field[row][column];
+					switch(currentCell.getState()){
+					case toBeDEAD:
+						removeCell(currentCell);
+						updated = true;
+						break;
+					case toBeLIFE:
+						addCell(currentCell);
+						updated = true;
+						break;
+					case DEAD:
+						// do nothing
+						break;
+					case LIFE:
+						// do nothing
+						break;
+					}
+				}
+			}
+		return updated;
+	}
+
 }

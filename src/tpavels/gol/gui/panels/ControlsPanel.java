@@ -150,6 +150,9 @@ public class ControlsPanel implements ActionListener, Constants{
 		return button;
 	}
 
+	/**
+	 * Handle Game Over state
+	 */
 	public void end() {
 		buttons.get(START_ID).setEnabled(false);
 		buttons.get(STEP_ID).setEnabled(false);

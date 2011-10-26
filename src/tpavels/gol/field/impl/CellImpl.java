@@ -1,5 +1,8 @@
 package tpavels.gol.field.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import tpavels.gol.constants.Constants;
 import tpavels.gol.field.Cell;
 import tpavels.gol.field.Field;
@@ -7,28 +10,71 @@ import tpavels.gol.field.Field;
 public class CellImpl implements Constants, Cell{
 
 	private CellState state;
-	private int x;
-	private int y;
+	private final int row;
+	private final int column;
+	private int neighbours;
 	
 	/**
 	 * Initialize new Cell
-	 * @param x cell ROW on the {@link Field}
-	 * @param y cell COLUMN on the {@link Field} 
+	 * @param row cell ROW on the {@link Field}
+	 * @param column cell COLUMN on the {@link Field} 
 	 */
-	public CellImpl(int x, int y){
+	public CellImpl(final int row, final int column){
 		this.state = CellState.DEAD;
-		this.x = x;
-		this.y = y;
+		this.neighbours = 0;
+		this.row = row;
+		this.column = column;
 	}
 	
 	@Override
-	public int getX(){
-		return x;
+	public void resetNeighbourCounter() {
+		this.neighbours = 0;
+	}
+
+	@Override
+	public void addNeighbour() {
+		if (neighbours < 8){
+			++neighbours;
+		} else {
+			System.err.println("ERRROR: too many neighbours - "+neighbours+" "+this.toString());
+		}
+	}
+
+	@Override
+	public void removeNeighbour() {
+		if (neighbours > 0){
+			--neighbours;
+		} else {
+			System.err.println("ERRROR: neighbours cannot be negative - "+neighbours+" "+this.toString());
+		}
+	}
+	
+	// lazy initialization
+	private volatile Set<Cell> neighbourCells = null;
+	@Override
+	public Set<Cell> neighbourCells(){
+		if (neighbourCells == null) {
+			neighbourCells = new HashSet<Cell>(8);
+			neighbourCells.add(new CellImpl(row-1, column));
+			neighbourCells.add(new CellImpl(row-1, column+1));
+			neighbourCells.add(new CellImpl(row, column+1));
+			neighbourCells.add(new CellImpl(row+1, column+1));
+			neighbourCells.add(new CellImpl(row+1, column));
+			neighbourCells.add(new CellImpl(row+1, column-1));
+			neighbourCells.add(new CellImpl(row, column-1));
+			neighbourCells.add(new CellImpl(row-1, column-1));
+		}
+		return neighbourCells;
 	}
 	
 	@Override
-	public int getY(){
-		return y;
+	public int getRow(){
+		return row;
+	}
+	
+	@Override
+	public int getColumn(){
+		return column;
 	}
 	
 	@Override
@@ -78,8 +124,37 @@ public class CellImpl implements Constants, Cell{
 
 	@Override
 	public String toString() {
-		return "State: " + state.toString() + "; x: " + x + ", y: " + y; 
+		return "State: " + state.toString() + "; row: " + row + ", column: " + column; 
+	}
+
+	@Override
+	public int getNeighbour() {
+		return neighbours;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 27;
+		int result = 3;
+		result = prime * result + row;
+		result = prime * result + column;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CellImpl other = (CellImpl) obj;
+		if (this.row != other.row)
+			return false;
+		if (this.column != other.column)
+			return false;
+		return true;
+	}
 
 }

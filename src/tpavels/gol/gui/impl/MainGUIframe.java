@@ -94,7 +94,7 @@ public class MainGUIframe implements Constants {
 		frame.setUndecorated(false);
 		return frame;
 	}
-
+	
 	public void end() {
 		controlsPanel.end();
 	}

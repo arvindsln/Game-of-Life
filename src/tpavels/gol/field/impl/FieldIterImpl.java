@@ -12,8 +12,8 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	private Cell currentCell = null;
 	private FieldImpl fieldImpl = null;
 	
-	private int nextX;
-	private int nextY;
+	private int nextRow;
+	private int nextColumn;
 	
 	/**
 	 * Set iterator start points to {@link Constants#START_POINT}
@@ -22,16 +22,16 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	 */
 	public FieldIterImpl(FieldImpl fieldImpl) {
 		this.fieldImpl = fieldImpl;
-		nextX = START_POINT;
-		nextY = START_POINT;
+		nextRow = START_POINT;
+		nextColumn = START_POINT;
 	}
 	
 	@Override
 	public boolean hasNext() {
-		boolean isBottomRight = nextY >= COLS-1 && nextX > ROWS -1;
+		boolean isBottomRight = ((nextColumn >= COLS-1) && (nextRow >= ROWS) || (nextRow >= ROWS));
 		if (isBottomRight){
-			nextX = START_POINT;
-			nextY = START_POINT;
+			nextRow = START_POINT;
+			nextColumn = START_POINT;
 			return false;
 		}
 		return true;
@@ -39,13 +39,13 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 
 	@Override
 	public boolean isEmpty() {
-		return fieldImpl.getAliveCells() == 0;
+		return fieldImpl.getNumberOfAliveCells() == 0;
 	}
 
 	@Override
 	public Cell next() {
 		if (hasNext()) {
-			currentCell = fieldImpl.getCell(nextX, nextY);
+			currentCell = fieldImpl.getCell(nextRow, nextColumn);
 			nextCell();
 			return currentCell;
 		}
@@ -63,7 +63,7 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	}
 	
 	@Override
-	public void setLive() {
+	public void setLife() {
 		fieldImpl.setLife(currentCell);
 	}
 
@@ -82,11 +82,11 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 	 * doesn't check rows number. 
 	 */
 	private void nextCell() {
-		if (nextY != COLS-1) {
-			nextY++;
+		if (nextColumn != COLS-1) {
+			nextColumn++;
 		} else {
-			nextX++;
-			nextY = START_POINT;
+			nextRow++;
+			nextColumn = START_POINT;
 		}
 	}
 	

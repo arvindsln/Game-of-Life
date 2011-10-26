@@ -11,9 +11,9 @@ public interface Constants {
 	 *************************************************/
 	
 	/**
-	 * Main game loop tick time in milliseconds.
+	 * Main game loop delay time in milliseconds.
 	 */
-	public final long TICK = 150L;
+	public final long TICK = 30L; // 10L
 	
 	
 	/*************************************************
@@ -23,12 +23,12 @@ public interface Constants {
 	/**
 	 * Number of rows of the game field 
 	 */
-	public final int ROWS = 150;
+	public final int ROWS = 300; // 150
 	
 	/**
 	 * Number of columns of the game field 
 	 */
-	public final int COLS = 250;
+	public final int COLS = 500; // 250
 	
 	/**
 	 * Start point of {@link Field}, ({@value}, {@value})
@@ -38,7 +38,7 @@ public interface Constants {
 	/**
 	 * Number of random cells to revive 
 	 */
-	public static final int NUMBER_RANDOM_CELLS = 1000;
+	public static final int NUMBER_RANDOM_CELLS = 5000; // 1000
 	
 	
 	/**********************************************
@@ -58,7 +58,7 @@ public interface Constants {
 	/**
 	 * Main game frame title
 	 */
-	public static final String FRAME_TITLE = "Game of Life ver 0.3.3";
+	public static final String FRAME_TITLE = "Game of Life ver 0.3.4";
 	
 	/**
 	 * Main frame height
@@ -88,7 +88,7 @@ public interface Constants {
 	/**
 	 * Cell size
 	 */
-	public static final int CELL_SIZE = 4;
+	public static final int CELL_SIZE = 2; // 4
 	
 	/**
 	 * Image with current generation of cells width

@@ -9,7 +9,8 @@ public interface FieldIter<E> extends Iterator<Cell>,  Constants {
 	/**
 	 * Return true while there are more {@link FieldIter} to return.
 	 * After it returns true, iterator will reset to start position,
-	 * defined as constant: {@link Constants#START_POINT}
+	 * defined as constant: {@link Constants#START_POINT}. 
+	 * Must be used before every {@link #next()} to ensure flawless work of iterator.
 	 * @return true if there is at least one cell more
 	 */
 	public boolean hasNext();
@@ -29,7 +30,7 @@ public interface FieldIter<E> extends Iterator<Cell>,  Constants {
 	 * Sets current returned {@link Cell} with {@link #next()} to born
 	 * @see Field#setLife(Cell)
 	 */
-	public void setLive();
+	public void setLife();
 
 	/**
 	 * @return true if there are only dead cells
