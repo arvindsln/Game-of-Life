@@ -1,4 +1,4 @@
-# Conway's Game of Life
+﻿# Conway's Game of Life
 
 ## Game rules
 
@@ -19,18 +19,25 @@ Game rules source: [wikipedia]
 
 Version notes
 ========
+## 0.3.4 (27/10/2011)
+* Redraw only alive cells.
+* Cache number of alive neighbours around cell.
+* Added FPS information to the field view.
+* Added new test cases.
+* Fixed iterator error (iterated twice over first row).
+
 ## 0.3.3 (14/10/2011)
-* New implementation of GUI
-* Fixed thread issues
-* Added STEP button
-* New behaviour of controls buttons
-* Ant build is updated
+* New implementation of GUI.
+* Fixed thread issues.
+* Added STEP button.
+* New behaviour of controls buttons.
+* Ant build is updated.
 
 ## 0.2 (12/10/2011)
-* added GUI, implemented as GridBagLayout
-* many issues with GUI, work in progress...
-* ant build is not updated
-* problem with threads, Core thread and GUI thread read/write the same data object (Field) simultaneously, cause corrupt data.
+* Added GUI, implemented as GridBagLayout.
+* Many issues with GUI, work in progress...
+* Ant build is not updated.
+* Problem with threads, Core thread and GUI thread read/write the same data object (Field) simultaneously, cause corrupt data.
 
 ## 0.1 (7/10/2011) 
-* initial commit
+* Initial commit.
