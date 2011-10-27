@@ -1,4 +1,4 @@
-# Conway's Game of Life #
+﻿# Conway's Game of Life #
 
 ## Game rules
 
@@ -19,6 +19,12 @@ Game rules source: [wikipedia]
 
 Version notes
 ========
+## 0.3.5 (28/10/2011)
+* Added cell coordinates check on the cell object initialization, it was moved from fieldImpl in order to slightly decrease computation time. Coordinates will be corrected only one time at initialization, not in the runtime as it was previous implemented.
+* Added unit test for cell coordinates check.
+* Introduced new constant for cell drawing, it is required to draw more better looking cell with 0.6 pixels wide black border around cell.
+* Added some GUI constants dependency: many of GUI constants aren't hardcoded, but computed at the game startup. I am not sure if this is a good approach.
+
 ## 0.3.4 (27/10/2011)
 * Redraw only alive cells.
 * Cache number of alive neighbours around cell.
