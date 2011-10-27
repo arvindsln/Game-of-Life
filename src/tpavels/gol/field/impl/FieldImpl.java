@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-import tpavels.gol.constants.Constants;
 import tpavels.gol.field.Cell;
 import tpavels.gol.field.Field;
 import tpavels.gol.field.FieldIter;
@@ -121,22 +120,11 @@ public class FieldImpl implements Field {
 	 * Get {@link Cell} from board. Left and right edges of the {@link Field} are stitched together, 
 	 * and the top and bottom edges also. 
 	 * 
-	 * @param row field row (start from -1 to {@link Constants#ROWS}, including)
-	 * @param column field column (start from -1 to {@link Constants#COLS}, including)
+	 * @param row field row 
+	 * @param column field column 
 	 * @return Cell
 	 */
 	public Cell getCell(int row, int column) {
-		boolean noBordersAround  = (row > START_POINT && row < ROWS-1) 
-				&& (column > START_POINT && column < COLS-1);
-		if (noBordersAround){
-			return field[row][column];
-		}
-		if (row < START_POINT) row = ROWS - 1;
-		if (column < START_POINT) column = COLS - 1;
-		
-		if (row >= ROWS) row = START_POINT;
-		if (column >= COLS) column = START_POINT;
-		
 		return field[row][column];
 	}
 	

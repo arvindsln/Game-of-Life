@@ -10,8 +10,8 @@ import tpavels.gol.field.Field;
 public class CellImpl implements Constants, Cell{
 
 	private CellState state;
-	private final int row;
-	private final int column;
+	private int row;
+	private int column;
 	private int neighbours;
 	
 	/**
@@ -22,8 +22,7 @@ public class CellImpl implements Constants, Cell{
 	public CellImpl(final int row, final int column){
 		this.state = CellState.DEAD;
 		this.neighbours = 0;
-		this.row = row;
-		this.column = column;
+		setCorrectCoordinates(row, column);
 	}
 	
 	@Override
@@ -155,6 +154,22 @@ public class CellImpl implements Constants, Cell{
 		if (this.column != other.column)
 			return false;
 		return true;
+	}
+	
+	private void setCorrectCoordinates(int row, int column) {
+		boolean noBordersAround  = (row > START_POINT && row < ROWS-1) 
+				&& (column > START_POINT && column < COLS-1);
+		
+		if (!noBordersAround){
+			if (row < START_POINT) row = ROWS - 1;
+			if (column < START_POINT) column = COLS - 1;
+			
+			if (row >= ROWS) row = START_POINT;
+			if (column >= COLS) column = START_POINT;
+		}
+		
+		this.row = row;
+		this.column = column;
 	}
 
 }

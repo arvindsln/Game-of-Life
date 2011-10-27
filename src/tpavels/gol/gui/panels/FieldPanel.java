@@ -28,7 +28,7 @@ public class FieldPanel extends JPanel implements Constants {
 		this.field = field;
 	}
 	
-	private boolean showStats = true; // show\hide FPS
+	private boolean showStats = false; // show\hide FPS
 	private long nextSecond = System.currentTimeMillis() + 1000;
 	private int frameInLastSecond = 0;
 	private int framesInCurrentSecond = 0;
@@ -58,10 +58,9 @@ public class FieldPanel extends JPanel implements Constants {
 
 			   break;
 			}
-			int cols = (cell.getColumn() * CELL_SIZE);
-			int rows = (cell.getRow() * CELL_SIZE);
-			gfx2D.fill(new Rectangle2D.Double(cols, rows, CELL_SIZE, CELL_SIZE));
-			
+			int cols = (cell.getColumn() * CELL_SIZE_INT);
+			int rows = (cell.getRow() * CELL_SIZE_INT);
+			gfx2D.fill(new Rectangle2D.Double(cols, rows, CELL_SIZE_DRAW, CELL_SIZE_DRAW));
 		}
 		
 		// FPS

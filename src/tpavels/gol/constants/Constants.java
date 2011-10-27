@@ -11,7 +11,7 @@ public interface Constants {
 	 *************************************************/
 	
 	/**
-	 * Main game loop delay time in milliseconds.
+	 * Main game loop delay time in milliseconds ({@value})
 	 */
 	public final long TICK = 30L; // 10L
 	
@@ -20,15 +20,18 @@ public interface Constants {
 	 * FIELD
 	 *************************************************/
 	
-	/**
-	 * Number of rows of the game field 
-	 */
-	public final int ROWS = 300; // 150
+	
+	// ROWS:COLS = 3:5
 	
 	/**
-	 * Number of columns of the game field 
+	 * Number of rows of the game field ({@value})
 	 */
-	public final int COLS = 500; // 250
+	public final int ROWS = 160; // default:150   
+
+	/**
+	 * Number of columns of the game field ({@value})
+	 */
+	public final int COLS = (ROWS/3) * 5; // default:250  
 	
 	/**
 	 * Start point of {@link Field}, ({@value}, {@value})
@@ -36,14 +39,19 @@ public interface Constants {
 	public final int START_POINT = 0;
 	
 	/**
-	 * Number of random cells to revive 
+	 * Number of random cells to revive ({@value})
 	 */
-	public static final int NUMBER_RANDOM_CELLS = 5000; // 1000
+	public static final int NUMBER_RANDOM_CELLS = 1000; // 1000
 	
 	
 	/**********************************************
 	 * GUI
 	 **********************************************/
+	
+	/**
+	 * Main game frame title ({@value})
+	 */
+	public static final String FRAME_TITLE = "Game of Life ver 0.3.5";
 	
 	/**
 	 * Dead cell colour on the field
@@ -56,19 +64,29 @@ public interface Constants {
 	public static final Color LIFE_COLOUR = Color.GREEN;
 
 	/**
-	 * Main game frame title
+	 * Cell size
 	 */
-	public static final String FRAME_TITLE = "Game of Life ver 0.3.4";
+	public static final int CELL_SIZE_INT = 4; // default:4
+	public static final double CELL_SIZE_DRAW = 3.74; 
 	
 	/**
-	 * Main frame height
+	 * Image with current generation of cells width ({@value})
 	 */
-	public static final int FRAME_HEIGHT = 677; // ROWS
+	public static final int IMAGE_WIDTH = COLS * CELL_SIZE_INT; // default:1000
+	/**
+	 * Image with current generation of cells height ({@value})
+	 */
+	public static final int IMAGE_HEIGHT = ROWS * CELL_SIZE_INT; // default:600
 	
 	/**
-	 * Main frame width
+	 * Button preferred width ({@value})
 	 */
-	public static final int FRAME_WIDTH = 1016; // COLS
+	public static final int BUTTON_WIDTH = 100;
+	
+	/**
+	 * Button preferred height ({@value})
+	 */
+	public static final int BUTTON_HEIGHT = 30;
 	
 	/**
 	 * Border width ({@value}) in pixels for all components
@@ -76,28 +94,19 @@ public interface Constants {
 	public static final int BORDER = 5;
 	
 	/**
-	 * Button preferred width
+	 * Main frame height ({@value})
 	 */
-	public static final int BUTTON_WIDTH = 100;
+	public static final int FRAME_HEIGHT = IMAGE_HEIGHT + BUTTON_HEIGHT + BORDER*2 + 37; // ROWS default:677 
+	 															//37 is magic number?
 	
 	/**
-	 * Button preferred height
+	 * Main frame width ({@value})
 	 */
-	public static final int BUTTON_HEIGHT = 30;
+	public static final int FRAME_WIDTH = IMAGE_WIDTH + BORDER*2 + 6; // COLS default:1016
+																//6 is magic number?
 	
-	/**
-	 * Cell size
-	 */
-	public static final int CELL_SIZE = 2; // 4
 	
-	/**
-	 * Image with current generation of cells width
-	 */
-	public static final int IMAGE_WIDTH = COLS * CELL_SIZE;
-	/**
-	 * Image with current generation of cells height
-	 */
-	public static final int IMAGE_HEIGHT = ROWS * CELL_SIZE;
+	
 	
 
 	/*****************************************
