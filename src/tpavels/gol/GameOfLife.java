@@ -16,5 +16,6 @@ public class GameOfLife {
 		
 		final Core game = new CoreImpl();
 		game.startup();
+		
 	}
 }

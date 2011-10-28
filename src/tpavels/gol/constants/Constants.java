@@ -13,7 +13,7 @@ public interface Constants {
 	/**
 	 * Main game loop delay time in milliseconds ({@value})
 	 */
-	public final long TICK = 30L; // 10L
+	public final long TICK = 150L; // 10L
 	
 	
 	/*************************************************
@@ -51,7 +51,7 @@ public interface Constants {
 	/**
 	 * Main game frame title ({@value})
 	 */
-	public static final String FRAME_TITLE = "Game of Life ver 0.3.5";
+	public static final String FRAME_TITLE = "Game of Life ver 0.3.6";
 	
 	/**
 	 * Dead cell colour on the field
@@ -91,7 +91,7 @@ public interface Constants {
 	/**
 	 * Border width ({@value}) in pixels for all components
 	 */
-	public static final int BORDER = 5;
+	public static final int BORDER = 3;
 	
 	/**
 	 * Main frame height ({@value})

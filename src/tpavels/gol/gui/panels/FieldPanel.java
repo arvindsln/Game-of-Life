@@ -1,6 +1,7 @@
 package tpavels.gol.gui.panels;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -18,17 +19,15 @@ import tpavels.gol.gui.impl.MainGUIframe;
 
 public class FieldPanel extends JPanel implements Constants {
 
-	public void createField(JPanel container){
-		MainGUIframe.addUIComponent(container, this, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new int[] {0,1,7,1}, new Insets(0, BORDER, BORDER, BORDER));
-	}
-	
 	private Field field;
-	public FieldPanel(final Field field) {
+	
+	public FieldPanel(JPanel container, final Field field) {
 		this.field = field;
+		MainGUIframe.addUIComponent(container, this, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new int[] {0,1,11,1}, new Insets(0, BORDER, BORDER, BORDER));
 	}
 	
-	private boolean showStats = false; // show\hide FPS
+	private boolean showStats = true; // show\hide FPS
 	private long nextSecond = System.currentTimeMillis() + 1000;
 	private int frameInLastSecond = 0;
 	private int framesInCurrentSecond = 0;
@@ -72,10 +71,10 @@ public class FieldPanel extends JPanel implements Constants {
 		}
 		framesInCurrentSecond++;
 		if (showStats){
-			gfx2D.setPaint(Color.WHITE);
-			gfx2D.fillRect(17, 7, 46, 20);
-			gfx2D.setColor(Color.BLACK);
-			gfx2D.drawString(frameInLastSecond + " fps", 20, 20);
+			gfx2D.setColor(Color.WHITE);
+			Font font = new Font("Arial", Font.BOLD, 20);
+			gfx2D.setFont(font );
+			gfx2D.drawString(frameInLastSecond + " FPS", 5, 20);
 		}
 	}
 

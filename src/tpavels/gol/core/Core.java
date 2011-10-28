@@ -44,4 +44,10 @@ public interface Core extends Constants{
 	 */
 	public void reset();
 	
+	/**
+	 * Set a new render delay
+	 * @param delay milliseconds to wait after screen refresh
+	 */
+	public void setDelay(long delay);
+	
 }

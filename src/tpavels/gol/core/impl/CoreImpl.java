@@ -14,6 +14,7 @@ public class CoreImpl implements Core {
 	private Field field = new FieldImpl();
 	private GUIManager guiManager = null;
 	private GameState state = null;
+	private long delay = TICK;
 	
 	@Override
 	public void startup() {
@@ -53,6 +54,11 @@ public class CoreImpl implements Core {
 	@Override
 	public void step() {
 		state = GameState.STEP;
+	}
+	
+	@Override
+	public void setDelay(long delay) {
+		this.delay = delay;
 	}
 
 	@Override
@@ -101,7 +107,7 @@ public class CoreImpl implements Core {
 		if (!isNextGeneration) doEnd();
 		guiManager.reDraw();
 		try {
-			TimeUnit.MILLISECONDS.sleep(TICK);
+			TimeUnit.MILLISECONDS.sleep(delay);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

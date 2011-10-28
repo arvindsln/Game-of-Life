@@ -62,9 +62,10 @@ public class MainGUIframe implements Constants {
 		int fieldFrameSizeH = FRAME_HEIGHT;
 		
 		final JFrame frame = createMainFrame(fieldFrameSizeW, fieldFrameSizeH);
-		createControls(containerPanel, game);
-		createField(containerPanel, field);
+		controlsPanel = new ControlsPanel(containerPanel, game);
+		fieldPanel = new FieldPanel(containerPanel, field);
 		
+		frame.setFocusable(true);
 		frame.setContentPane(containerPanel);
 		frame.setVisible(true);
 	}
@@ -72,16 +73,6 @@ public class MainGUIframe implements Constants {
 	public void reDraw(){
 		fieldPanel.gameRender();
 		fieldPanel.paintScreen();
-	}
-	
-	private void createControls(JPanel container, Core game) {
-		controlsPanel = new ControlsPanel(game);
-		controlsPanel.createControls(container);
-	}
-
-	private void createField(JPanel container, final Field field) {
-		fieldPanel = new FieldPanel(field);
-		fieldPanel.createField(container);
 	}
 	
 	private JFrame createMainFrame(int fieldFrameSizeW, int fieldFrameSizeH) {
