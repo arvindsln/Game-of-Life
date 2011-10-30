@@ -29,7 +29,7 @@ public class FieldPanel extends JPanel implements Constants {
 	public FieldPanel(JPanel container, final Field field) {
 		this.field = field;
 		MainGUIframe.addUIComponent(container, this, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new int[] {0,1,11,1}, new Insets(0, BORDER, BORDER, BORDER));
+				new int[] {0,1,10,1}, new Insets(0, BORDER, BORDER, BORDER));
 	}
 	
 	
