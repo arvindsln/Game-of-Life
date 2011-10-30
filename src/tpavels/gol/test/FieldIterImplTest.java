@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import tpavels.gol.constants.Constants;
 import tpavels.gol.field.Cell;
 import tpavels.gol.field.FieldIter;
 import tpavels.gol.field.impl.FieldImpl;
@@ -58,7 +59,7 @@ public class FieldIterImplTest extends TestCase {
 
 	public void testIterateOverAllDeadCells() {
 		field.clearField();
-		final int totalNumberOfCells = field.COLS * field.ROWS;
+		final int totalNumberOfCells = Constants.COLS * Constants.ROWS;
 		final Set<Cell> counter = new HashSet<Cell>(totalNumberOfCells);
 		FieldIter<Cell> iterator = field.iterator();
 		while(iterator.hasNext()){
