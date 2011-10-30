@@ -27,7 +27,7 @@ public class CellImpl implements Constants, Cell{
 	
 	@Override
 	public void resetNeighbourCounter() {
-		this.neighbours = 0;
+		neighbours = 0;
 	}
 
 	@Override

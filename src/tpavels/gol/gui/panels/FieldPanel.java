@@ -19,6 +19,11 @@ import tpavels.gol.gui.impl.MainGUIframe;
 
 public class FieldPanel extends JPanel implements Constants {
 
+	private static final int FPS_Y = 20;
+	private static final int FPS_X = 5;
+	private static final int FONT_SIZE = 20;
+	private boolean showFPS = true; 
+	
 	private Field field;
 	
 	public FieldPanel(JPanel container, final Field field) {
@@ -27,13 +32,10 @@ public class FieldPanel extends JPanel implements Constants {
 				new int[] {0,1,11,1}, new Insets(0, BORDER, BORDER, BORDER));
 	}
 	
-	private boolean showStats = true; // show\hide FPS
-	private long nextSecond = System.currentTimeMillis() + 1000;
-	private int frameInLastSecond = 0;
-	private int framesInCurrentSecond = 0;
 	
 	private Image fieldImage = null;
 	private Graphics2D gfx2D = (Graphics2D) this.getGraphics();
+	
 	public void gameRender() {
 		if (fieldImage == null) { 
 			fieldImage = createImage(IMAGE_WIDTH, IMAGE_HEIGHT);
@@ -43,8 +45,8 @@ public class FieldPanel extends JPanel implements Constants {
 			} else
 				gfx2D = (Graphics2D) fieldImage.getGraphics();
 		}
-		gfx2D.setPaint(DEAD_COLOUR);
-		gfx2D.fillRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+		
+		drawBackgound(DEAD_COLOUR);
 
 		Iterator<Cell> cellsToDraw = field.getAliveCells().iterator();
 		while(cellsToDraw.hasNext()){
@@ -62,7 +64,18 @@ public class FieldPanel extends JPanel implements Constants {
 			gfx2D.fill(new Rectangle2D.Double(cols, rows, CELL_SIZE_DRAW, CELL_SIZE_DRAW));
 		}
 		
-		// FPS
+		drawFPS();
+	}
+
+	private void drawBackgound(Color colour) {
+		gfx2D.setPaint(colour);
+		gfx2D.fillRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+	}
+
+	private long nextSecond = System.currentTimeMillis() + 1000;
+	private static int frameInLastSecond = 0;
+	private int framesInCurrentSecond = 0;
+	private void drawFPS() {
 		long currentTime = System.currentTimeMillis();
 		if (currentTime > nextSecond) {
 			nextSecond += 1000;
@@ -70,11 +83,10 @@ public class FieldPanel extends JPanel implements Constants {
 			framesInCurrentSecond = 0;
 		}
 		framesInCurrentSecond++;
-		if (showStats){
-			gfx2D.setColor(Color.WHITE);
-			Font font = new Font("Arial", Font.BOLD, 20);
-			gfx2D.setFont(font );
-			gfx2D.drawString(frameInLastSecond + " FPS", 5, 20);
+		if (showFPS) {
+			gfx2D.setColor(TEXT_COLOUR);
+			gfx2D.setFont(new Font(FONT, Font.BOLD, FONT_SIZE));
+			gfx2D.drawString(frameInLastSecond + " FPS", FPS_X, FPS_Y);
 		}
 	}
 

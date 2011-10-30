@@ -53,4 +53,9 @@ public interface Field extends Iterable<Cell>, Constants{
 	 * @param column
 	 */
 	public void addAliveCell(int row, int column);
+
+	/**
+	 * @return number of current generation
+	 */
+	public int getGeneration();
 }

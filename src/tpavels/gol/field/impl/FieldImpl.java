@@ -40,7 +40,7 @@ public class FieldImpl implements Field {
 
 	@Override
 	public void createRandomLifeCells() {
-		this.createRandomLifeCells(NUMBER_RANDOM_CELLS);
+		createRandomLifeCells(NUMBER_RANDOM_CELLS);
 	}
 
 	@Override
@@ -84,6 +84,11 @@ public class FieldImpl implements Field {
 		addCell(cell);
 	}
 
+	@Override
+	public int getGeneration() {
+		return generation;
+	}
+	
 	@Override
 	public boolean nextGeneration() {
 	/* 

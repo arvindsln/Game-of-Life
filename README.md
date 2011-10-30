@@ -20,6 +20,12 @@ Game rules source: [wikipedia]
 
 Version notes
 ------------------
+### 0.4.0 (30/10/2011)
+* Added slider to control speed.
+* Added information of total amount of cells, alive cells and current generation.
+* Changed control panel colour.
+* Changed FPS representation on the field.
+
 ### 0.3.5 (28/10/2011)
 * Added cell coordinates check on the cell object initialization, it was moved from fieldImpl in order to slightly decrease computation time. Coordinates will be corrected only one time at initialization, not in the runtime as it was previous implemented.
 * Added unit test for cell coordinates check.

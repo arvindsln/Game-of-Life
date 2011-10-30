@@ -27,7 +27,7 @@ public class GUIManagerImpl implements Constants, GUIManager {
 	
 	@Override
 	public void reDraw(){
-		mainUIframe.reDraw();
+		mainUIframe.reDraw(field);
 	}
 	
 	@Override
@@ -36,9 +36,9 @@ public class GUIManagerImpl implements Constants, GUIManager {
 	}
 
 	private void startMainGUI() {
-		this.mainUIframe = new MainGUIframe();
-		this.mainUIframe.createGUI(game, field);
-		this.mainUIframe.reDraw();
+		mainUIframe = new MainGUIframe();
+		mainUIframe.createGUI(game, field);
+		reDraw();
 	}
 	
 	private void setupLookAndFeel() {

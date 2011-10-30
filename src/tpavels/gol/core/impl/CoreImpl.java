@@ -18,7 +18,7 @@ public class CoreImpl implements Core {
 	
 	@Override
 	public void startup() {
-		this.field = new FieldImpl();
+		field = new FieldImpl();
 		state = GameState.PAUSE;
 		renderGUI();
 		lifeLoop();
@@ -70,7 +70,7 @@ public class CoreImpl implements Core {
 	}
 	
 	private void renderGUI() {
-		this.guiManager = new GUIManagerImpl(this, field);
+		guiManager = new GUIManagerImpl(this, field);
 		guiManager.show();
 	}
 

@@ -1,6 +1,5 @@
 package tpavels.gol.gui.panels;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -10,18 +9,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
 
 import tpavels.gol.constants.Constants;
 import tpavels.gol.core.Core;
+import tpavels.gol.field.Field;
 import tpavels.gol.gui.impl.MainGUIframe;
 
 public class ControlsPanel implements ActionListener, Constants{
 	
+	
+	// four control button, ID is used to address them in the buttons list
 	private static final int START_ID = 0;
 	private static final String START = "START";
 	private static final String PAUSE = "PAUSE";
@@ -41,16 +43,19 @@ public class ControlsPanel implements ActionListener, Constants{
 	 * Holds all control buttons
 	 * {0:START, 1:RANDOM, 2:RESET, 3:STEP}
 	 */
-	private ArrayList<JButton> buttons = new ArrayList<JButton>();
-	private JSlider speed = null;
+	private List<JButton> buttons = null;
 	private Core game = null;
 	private SliderPanel slider = null;
+	private InfoPanel infoPanel = null;
 	
-	public ControlsPanel(JPanel container, Core game) {
+	public ControlsPanel(final JPanel container, final Core game, final Field field) {
 		this.game = game;
+		this.slider = new SliderPanel(game);
+		this.infoPanel = new InfoPanel(field);
+		this.buttons = new ArrayList<JButton>();
+		
 		addKeyPresserListener(container);
 		createAllControlsButtons();
-		slider = new SliderPanel(game);
 		layoutComponents(container);
 	}
 	
@@ -86,24 +91,22 @@ public class ControlsPanel implements ActionListener, Constants{
 			// there are cell to interact
 			for (JButton bttn : buttons) {
 				bttn.setEnabled(true);
-				bttn.setFocusable(true);
 			}
 		}
 		
 					//** RESET **//
 		if (e.getActionCommand().equals(RESET)){
 			game.reset();
+			slider.reset();
 			
 			// reset buttons at initial state
 			buttons.get(START_ID).setText(START);
 			buttons.get(START_ID).setMnemonic('S');
-			buttons.get(START_ID).setEnabled(false);
-			buttons.get(RESET_ID).setEnabled(false);
-			buttons.get(STEP_ID).setEnabled(false);
-			buttons.get(START_ID).setFocusable(false);
-			buttons.get(RESET_ID).setFocusable(false);
-			buttons.get(STEP_ID).setFocusable(false);
-			slider.reset();
+			for (JButton bttn : buttons) {
+				if (!RANDOM.equals(bttn.getText())) {
+					bttn.setEnabled(false);
+				}
+			}
 		}
 		
 					//** STEP **//
@@ -125,16 +128,28 @@ public class ControlsPanel implements ActionListener, Constants{
 		buttons.get(START_ID).setEnabled(false);
 		buttons.get(STEP_ID).setEnabled(false);
 	}
+	
+	
+	/**
+	 * Update information on top of the control panels,
+	 * it will update two numbers: generation and alive cells
+	 * @param field 
+	 */
+	public void updateInfo(Field field) {
+		infoPanel.updateLabels(field);
+	}
 
 
-	private void addKeyPresserListener(JPanel container) {
+	private void addKeyPresserListener(final JPanel container) {
 		Frame[] frames = Frame.getFrames();
 		for (Frame frame : frames) {
 			frame.addKeyListener(keyAdapter);
 		}
+		
 	}
 	
 	private void createAllControlsButtons(){
+
 		JButton start, step, random, reset;
 		start = createButton(START);
 		start.setEnabled(false);
@@ -144,7 +159,6 @@ public class ControlsPanel implements ActionListener, Constants{
 		random = createButton(RANDOM);
 		random.setEnabled(true);
 		random.setMnemonic('R');
-		random.setDisplayedMnemonicIndex(0);
 		buttons.add(random);
 		
 		reset = createButton(RESET);
@@ -156,9 +170,18 @@ public class ControlsPanel implements ActionListener, Constants{
 		step.setMnemonic('t');
 		buttons.add(step);
 		step.setEnabled(false);
+		
+		for (JButton bttn : buttons) {
+			/*
+			 * Done to enable shortcuts
+			 * When a button is in focus shortcuts aren't working
+			 */
+			bttn.setFocusable(false); 
+			bttn.setBackground(CONTROL_PANEL_COLOUR);
+		}
 	}
 	
-	private JButton createButton(String name) {
+	private JButton createButton(final String name) {
 		JButton button = new JButton(name);
 		button.setVisible(true);
 		button.addActionListener(this);
@@ -167,37 +190,37 @@ public class ControlsPanel implements ActionListener, Constants{
 		return button;
 	}
 	
-	private void layoutComponents(JPanel container) {
-		/*
-		 * Empty JPanels are needed to center others components
-		 */
+	private void layoutComponents(final JPanel container) {
 		
-		MainGUIframe.addUIComponent(container, new JPanel(), GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-				new int[] {1,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+		 // Empty JPanel is needed to center(?) others components
+		JPanel emptyPanel = new JPanel();
+		emptyPanel.setForeground(CONTROL_PANEL_COLOUR);
+		emptyPanel.setBackground(CONTROL_PANEL_COLOUR);
 		
-		MainGUIframe.addUIComponent(container, new JPanel(), GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
-				new int[] {2,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+		MainGUIframe.addUIComponent(container, emptyPanel, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+				new int[] {1,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		
-		MainGUIframe.addUIComponent(container, new JPanel(), GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
-				new int[] {3,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+		MainGUIframe.addUIComponent(container, infoPanel, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
+				new int[] {2,0,1,1}, new Insets(0, BORDER, 0, BORDER));
+		
+		MainGUIframe.addUIComponent(container, slider, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
+				new int[] {3,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		
 		MainGUIframe.addUIComponent(container, buttons.get(START_ID), GridBagConstraints.WEST, GridBagConstraints.NONE,
-				new int[] {4,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+				new int[] {4,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		MainGUIframe.addUIComponent(container, buttons.get(RANDOM_ID), GridBagConstraints.WEST, GridBagConstraints.NONE,
-				new int[] {5,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+				new int[] {5,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		MainGUIframe.addUIComponent(container, buttons.get(RESET_ID), GridBagConstraints.WEST, GridBagConstraints.NONE,
-				new int[] {6,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+				new int[] {6,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		MainGUIframe.addUIComponent(container, buttons.get(STEP_ID), GridBagConstraints.WEST, GridBagConstraints.NONE,
-				new int[] {7,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+				new int[] {7,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		
-		MainGUIframe.addUIComponent(container, new JPanel(), GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
-				new int[] {8,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+		MainGUIframe.addUIComponent(container, emptyPanel, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
+				new int[] {8,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		
-		MainGUIframe.addUIComponent(container, slider, GridBagConstraints.EAST, GridBagConstraints.NONE,
-				new int[] {9,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
+		MainGUIframe.addUIComponent(container, infoPanel, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
+				new int[] {9,0,2,1}, new Insets(0, BORDER, 0, BORDER));
 		
-		MainGUIframe.addUIComponent(container, new JPanel(), GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
-				new int[] {10,0,1,1}, new Insets(BORDER, BORDER, BORDER, BORDER));
 	}
 
 	private KeyAdapter keyAdapter = new KeyAdapter() {

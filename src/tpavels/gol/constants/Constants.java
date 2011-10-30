@@ -51,7 +51,12 @@ public interface Constants {
 	/**
 	 * Main game frame title ({@value})
 	 */
-	public static final String FRAME_TITLE = "Game of Life ver 0.3.6";
+	public static final String FRAME_TITLE = "Game of Life ver 0.4.0";
+	
+	/**
+	 * Control panel main colour
+	 */
+	public static final Color CONTROL_PANEL_COLOUR = Color.GRAY;
 	
 	/**
 	 * Dead cell colour on the field
@@ -62,6 +67,16 @@ public interface Constants {
 	 * Alive cell colour on the field 
 	 */
 	public static final Color LIFE_COLOUR = Color.GREEN;
+	
+	/**
+	 * Default text color
+	 */
+	public static final Color TEXT_COLOUR = Color.WHITE;
+	
+	/**
+	 * Default font
+	 */
+	public static final String FONT = "Arial";
 
 	/**
 	 * Cell size
@@ -86,12 +101,12 @@ public interface Constants {
 	/**
 	 * Button preferred height ({@value})
 	 */
-	public static final int BUTTON_HEIGHT = 30;
+	public static final int BUTTON_HEIGHT = 33;
 	
 	/**
 	 * Border width ({@value}) in pixels for all components
 	 */
-	public static final int BORDER = 3;
+	public static final int BORDER = 2;
 	
 	/**
 	 * Main frame height ({@value})
@@ -104,9 +119,6 @@ public interface Constants {
 	 */
 	public static final int FRAME_WIDTH = IMAGE_WIDTH + BORDER*2 + 6; // COLS default:1016
 																//6 is magic number?
-	
-	
-	
 	
 
 	/*****************************************

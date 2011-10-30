@@ -8,7 +8,7 @@ public interface GUIManager {
 	public void show();
 
 	/**
-	 * Refresh field GUI
+	 * Refresh GUI
 	 */
 	public void reDraw();
 
