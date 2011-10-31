@@ -231,7 +231,7 @@ public class FieldImpl implements Field {
 	 * Creates new cells objects on the field and set them to dead
 	 */
 	private void createField() {
-		field = new Cell[ROWS+2][COLS+2];
+		field = new Cell[ROWS][COLS];
 		for(int row = 0; row < ROWS; row++){
 			for(int column = 0; column < COLS; column++){
 				field[row][column] = new CellImpl(row, column);
