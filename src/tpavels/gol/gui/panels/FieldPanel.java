@@ -73,7 +73,7 @@ public class FieldPanel extends JPanel implements Constants {
 	}
 
 	private long nextSecond = System.currentTimeMillis() + 1000;
-	private static int frameInLastSecond = 0;
+	private int frameInLastSecond = 0;
 	private int framesInCurrentSecond = 0;
 	private void drawFPS() {
 		long currentTime = System.currentTimeMillis();
