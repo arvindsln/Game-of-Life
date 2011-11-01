@@ -219,7 +219,7 @@ public class ControlsPanel implements ActionListener, Constants{
 				new int[] {8,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		
 		MainGUIframe.addUIComponent(container, infoPanel, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
-				new int[] {9,0,2,1}, new Insets(0, BORDER, 0, BORDER));
+				new int[] {9,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		
 	}
 

@@ -111,7 +111,7 @@ public interface Constants {
 	/**
 	 * Main frame height ({@value})
 	 */
-	public static final int FRAME_HEIGHT = IMAGE_HEIGHT + BUTTON_HEIGHT + BORDER*2 + 37; // ROWS default:677 
+	public static final int FRAME_HEIGHT = IMAGE_HEIGHT + BUTTON_HEIGHT + BORDER + 37; // ROWS default:677 
 	 															//37 is magic number?
 	
 	/**
