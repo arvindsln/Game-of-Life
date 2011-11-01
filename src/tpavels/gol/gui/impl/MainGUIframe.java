@@ -52,8 +52,8 @@ public class MainGUIframe implements Constants {
 		jp.add(jc,c);
 	}
 	
-	FieldPanel fieldPanel = null;
-	ControlsPanel controlsPanel = null;
+	private FieldPanel fieldPanel = null;
+	private ControlsPanel controlsPanel = null;
 
 	public void createGUI(final Core game, final Field field){
 		
