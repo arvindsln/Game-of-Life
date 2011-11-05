@@ -7,12 +7,17 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import tpavels.gol.constants.Constants;
+import tpavels.gol.core.Core;
 import tpavels.gol.field.Cell;
 import tpavels.gol.field.Field;
 import tpavels.gol.gui.impl.MainGUIframe;
@@ -25,11 +30,17 @@ public class FieldPanel extends JPanel implements Constants {
 	private boolean showFPS = true; 
 	
 	private Field field;
+	private Core game;
+	private List<JButton> buttons;
 	
-	public FieldPanel(JPanel container, final Field field) {
+	public FieldPanel(JPanel container, Core game, final Field field, List<JButton> buttons) {
 		this.field = field;
+		this.game = game;
+		this.buttons = buttons;
 		MainGUIframe.addUIComponent(container, this, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new int[] {0,1,10,1}, new Insets(0, BORDER, BORDER, BORDER));
+		addMouseListener(mouseHandler);
+		addMouseMotionListener(mouseHandler);
 	}
 	
 	
@@ -121,4 +132,74 @@ public class FieldPanel extends JPanel implements Constants {
 	}
 
 	private static final long serialVersionUID = -6629202213300350819L;
+	
+	private boolean alive = false;
+	private MouseAdapter mouseHandler = new MouseAdapter() {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			alive = false;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			pauseGame();
+			if (isAlive(e)){
+				alive = true;
+			}
+			drawCellWithMouse(e);
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			drawCellWithMouse(e);
+		}
+
+	};
+	
+	private boolean isField(MouseEvent e) {
+		int rowY = e.getY();
+		int columnX = e.getX();
+		return (rowY >= START_POINT && rowY < IMAGE_HEIGHT) && 
+				(columnX < IMAGE_WIDTH && columnX >= START_POINT);
+	}
+
+	private void pauseGame() {
+		game.pause();
+		//FIXME do it more correctly (?)
+		// change button functional name 
+		if (buttons.get(ControlsPanel.START_ID).getText().equals(ControlsPanel.PAUSE)){
+			buttons.get(ControlsPanel.START_ID).setText(ControlsPanel.RESUME);
+		}
+	}
+	
+	private boolean isAlive(MouseEvent e) {
+		if (isField(e)) {
+			int row = (int) (e.getY() / CELL_SIZE_INT);
+			int column = (int) (e.getX() / CELL_SIZE_INT);
+			if (field.getCell(row, column).isAlive()) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	private void drawCellWithMouse(MouseEvent e) {
+		if (isField(e)) {
+			int row = (int) (e.getY() / CELL_SIZE_INT);
+			int column = (int) (e.getX() / CELL_SIZE_INT);
+			if (!alive && field.getCell(row, column).isDead()) {
+				field.addAliveCell(row, column);
+				gameRender();
+				paintScreen();
+			} else if (alive && field.getCell(row, column).isAlive()){
+				field.removeAliveCell(row, column);
+				gameRender();
+				paintScreen();
+			}
+		}
+	}
 }

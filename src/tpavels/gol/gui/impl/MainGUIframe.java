@@ -3,7 +3,9 @@ package tpavels.gol.gui.impl;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -63,11 +65,17 @@ public class MainGUIframe implements Constants {
 		
 		final JFrame frame = createMainFrame(fieldFrameSizeW, fieldFrameSizeH);
 		createContols(containerPanel, game, field);
-		fieldPanel = new FieldPanel(containerPanel, field);
+		createField(containerPanel, game, field);
 		
 		frame.setFocusable(true);
 		frame.setContentPane(containerPanel);
 		frame.setVisible(true);
+	}
+
+	private void createField(final JPanel containerPanel, final Core game,
+			final Field field) {
+		List<JButton> buttons = controlsPanel.getbuttons();
+		fieldPanel = new FieldPanel(containerPanel, game, field, buttons);
 	}
 
 	public void reDraw(Field field){
@@ -93,7 +101,4 @@ public class MainGUIframe implements Constants {
 		return frame;
 	}
 	
-	public void end() {
-		controlsPanel.end();
-	}
 }

@@ -83,6 +83,12 @@ public class FieldImpl implements Field {
 		Cell cell = getCell(row, column);
 		addCell(cell);
 	}
+	
+	@Override
+	public void removeAliveCell(int row, int column) {
+		Cell cell = getCell(row, column);
+		removeCell(cell);
+	}
 
 	@Override
 	public int getGeneration() {

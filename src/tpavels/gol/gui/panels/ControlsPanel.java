@@ -24,19 +24,19 @@ public class ControlsPanel implements ActionListener, Constants{
 	
 	
 	// four control button, ID is used to address them in the buttons list
-	private static final int START_ID = 0;
-	private static final String START = "START";
-	private static final String PAUSE = "PAUSE";
-	private static final String RESUME = "RESUME";
+	public static final int START_ID = 0;
+	public static final String START = "START";
+	public static final String PAUSE = "PAUSE";
+	public static final String RESUME = "RESUME";
 	
-	private static final int RANDOM_ID = 1;
-	private static final String RANDOM = "RANDOM("+NUMBER_RANDOM_CELLS+")";
+	public static final int RANDOM_ID = 1;
+	public static final String RANDOM = "RANDOM("+NUMBER_RANDOM_CELLS+")";
 	
-	private static final int RESET_ID = 2;
-	private static final String RESET = "RESET";
+	public static final int RESET_ID = 2;
+	public static final String RESET = "RESET";
 	
-	private static final int STEP_ID = 3;
-	private static final String STEP = "STEP";
+	public static final int STEP_ID = 3;
+	public static final String STEP = "STEP";
 	
 	
 	/**
@@ -57,6 +57,10 @@ public class ControlsPanel implements ActionListener, Constants{
 		addKeyPresserListener(container);
 		createAllControlsButtons();
 		layoutComponents(container);
+	}
+	
+	public List<JButton> getbuttons() {
+		return buttons;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -88,10 +92,6 @@ public class ControlsPanel implements ActionListener, Constants{
 				buttons.get(START_ID).setText(RESUME);
 				buttons.get(START_ID).setMnemonic('u');
 			}
-			// there are cell to interact
-			for (JButton bttn : buttons) {
-				bttn.setEnabled(true);
-			}
 		}
 		
 					//** RESET **//
@@ -102,11 +102,6 @@ public class ControlsPanel implements ActionListener, Constants{
 			// reset buttons at initial state
 			buttons.get(START_ID).setText(START);
 			buttons.get(START_ID).setMnemonic('S');
-			for (JButton bttn : buttons) {
-				if (!RANDOM.equals(bttn.getText())) {
-					bttn.setEnabled(false);
-				}
-			}
 		}
 		
 					//** STEP **//
@@ -121,15 +116,6 @@ public class ControlsPanel implements ActionListener, Constants{
 		}
 	}
 
-	/**
-	 * Handle Game Over state
-	 */
-	public void end() {
-		buttons.get(START_ID).setEnabled(false);
-		buttons.get(STEP_ID).setEnabled(false);
-	}
-	
-	
 	/**
 	 * Update information on top of the control panels,
 	 * it will update two numbers: generation and alive cells
@@ -152,7 +138,7 @@ public class ControlsPanel implements ActionListener, Constants{
 
 		JButton start, step, random, reset;
 		start = createButton(START);
-		start.setEnabled(false);
+		start.setEnabled(true);
 		start.setMnemonic('S');
 		buttons.add(start);
 		
@@ -163,13 +149,13 @@ public class ControlsPanel implements ActionListener, Constants{
 		
 		reset = createButton(RESET);
 		reset.setMnemonic('e');
-		reset.setEnabled(false);
+		reset.setEnabled(true);
 		buttons.add(reset);
 		
 		step = createButton(STEP);
 		step.setMnemonic('t');
 		buttons.add(step);
-		step.setEnabled(false);
+		step.setEnabled(true);
 		
 		for (JButton bttn : buttons) {
 			/*
@@ -265,4 +251,5 @@ public class ControlsPanel implements ActionListener, Constants{
 			}
 
 		}};
+
 }

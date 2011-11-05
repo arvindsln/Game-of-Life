@@ -55,7 +55,22 @@ public interface Field extends Iterable<Cell>, Constants{
 	public void addAliveCell(int row, int column);
 
 	/**
+	 * Removes alive cell from field, doesn't check if this cell is already dead
+	 * @param row 
+	 * @param column
+	 */
+	public void removeAliveCell(int row, int column);
+	
+	/**
 	 * @return number of current generation
 	 */
 	public int getGeneration();
+	
+	/**
+	 * @param row
+	 * @param column
+	 * @return cell object from the field
+	 */
+	public Cell getCell(int row, int column);
+	
 }

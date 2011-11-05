@@ -21,7 +21,7 @@ public class SliderPanel extends JPanel implements ChangeListener , Constants {
 	
 	private static final int SCALE = 10;
 	private static final int SPEED_MAX = 50;
-	private static final int SPEED_MIN = 0;
+	private static final int SPEED_MIN = 2;
 	private static final int SPEED_INIT = (int) (TICK/SCALE);
 	
 	private Core game = null;
@@ -74,7 +74,7 @@ public class SliderPanel extends JPanel implements ChangeListener , Constants {
 		JSlider source = (JSlider)e.getSource();
 		if (!source.getValueIsAdjusting()) {
 			int delay = (int)source.getValue();
-			if (delay == 0) delay = 1; // minimum is 1ms delay
+			if (delay == 0) delay = 1; // minimum is 10ms delay
 			long multipler = (long) (delay * SCALE); 
 			game.setDelay(multipler);
 		}

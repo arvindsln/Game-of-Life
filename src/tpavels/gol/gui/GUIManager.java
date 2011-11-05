@@ -13,9 +13,4 @@ public interface GUIManager {
 	public void reDraw();
 
 	
-	/**
-	 * The end. This generation is doomed.
-	 */
-	public void end();
-
 }

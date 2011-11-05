@@ -126,7 +126,6 @@ public class CoreImpl implements Core {
 
 	private void doEnd() {
 		guiManager.reDraw();
-		guiManager.end();
 		pause();		
 	}
 	

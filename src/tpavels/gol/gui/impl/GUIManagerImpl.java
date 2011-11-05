@@ -30,11 +30,6 @@ public class GUIManagerImpl implements Constants, GUIManager {
 		mainUIframe.reDraw(field);
 	}
 	
-	@Override
-	public void end() {
-		mainUIframe.end();
-	}
-
 	private void startMainGUI() {
 		mainUIframe = new MainGUIframe();
 		mainUIframe.createGUI(game, field);
