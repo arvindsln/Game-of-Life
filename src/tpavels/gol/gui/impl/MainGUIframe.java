@@ -74,8 +74,7 @@ public class MainGUIframe implements Constants {
 
 	private void createField(final JPanel containerPanel, final Core game,
 			final Field field) {
-		List<JButton> buttons = controlsPanel.getbuttons();
-		fieldPanel = new FieldPanel(containerPanel, game, field, buttons);
+		fieldPanel = new FieldPanel(containerPanel, game, field, controlsPanel);
 	}
 
 	public void reDraw(Field field){

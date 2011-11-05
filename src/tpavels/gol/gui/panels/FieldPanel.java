@@ -31,12 +31,12 @@ public class FieldPanel extends JPanel implements Constants {
 	
 	private Field field;
 	private Core game;
-	private List<JButton> buttons;
+	private ControlsPanel controls;
 	
-	public FieldPanel(JPanel container, Core game, final Field field, List<JButton> buttons) {
+	public FieldPanel(JPanel container, Core game, final Field field, ControlsPanel controlsPanel) {
 		this.field = field;
 		this.game = game;
-		this.buttons = buttons;
+		this.controls = controlsPanel;
 		MainGUIframe.addUIComponent(container, this, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new int[] {0,1,10,1}, new Insets(0, BORDER, BORDER, BORDER));
 		addMouseListener(mouseHandler);
@@ -168,6 +168,7 @@ public class FieldPanel extends JPanel implements Constants {
 		game.pause();
 		//FIXME do it more correctly (?)
 		// change button functional name 
+		List<JButton> buttons = controls.getbuttons();
 		if (buttons.get(ControlsPanel.START_ID).getText().equals(ControlsPanel.PAUSE)){
 			buttons.get(ControlsPanel.START_ID).setText(ControlsPanel.RESUME);
 		}
@@ -201,5 +202,6 @@ public class FieldPanel extends JPanel implements Constants {
 				paintScreen();
 			}
 		}
+		controls.updateInfo(field);
 	}
 }
