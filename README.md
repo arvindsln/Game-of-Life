@@ -24,7 +24,7 @@ Version notes
 * Updated 'alive cells' counter, it will be updated when user draws or erases cells.
 
 ### 0.5.0 (5/11/2011)
-* Added draw and remove cells from the field with the mouse-click feature. To draw new cells on the black part of the field and drag; to erase alive cell from the field click on it, dragging mouse in that state will also erase other cells.
+* Added draw and remove cells from the field with the mouse-click feature. To draw new cells click on the black part of the field and drag; to erase alive cell from the field click on it, dragging mouse in that state will also erase other cells.
 
 ### 0.4.0 (30/10/2011)
 * Added slider to control speed.
