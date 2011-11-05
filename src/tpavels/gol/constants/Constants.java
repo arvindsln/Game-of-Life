@@ -51,7 +51,7 @@ public interface Constants {
 	/**
 	 * Main game frame title ({@value})
 	 */
-	public static final String FRAME_TITLE = "Game of Life ver 0.5.0";
+	public static final String FRAME_TITLE = "Game of Life ver 0.5.1";
 	
 	/**
 	 * Control panel main colour

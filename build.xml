@@ -11,8 +11,8 @@
 	<property name="main-class" value="tpavels.gol.GameOfLife" />
 	
 	<property name="filename" value="${release.dir}/GameOfLife.exe" />
-	<property name="fileversion" value="0.5.0.0" />
-	<property name="txtfileversion" value="ver 0.5.0" />
+	<property name="fileversion" value="0.5.1.0" />
+	<property name="txtfileversion" value="ver 0.5.1" />
 
 	<path id="classpath">
 		<fileset dir="." includes="**/*.jar" />

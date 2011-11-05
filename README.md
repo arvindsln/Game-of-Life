@@ -20,6 +20,9 @@ Game rules source: [wikipedia]
 
 Version notes
 ------------------
+### 0.5.1 (5/11/2011)
+* Updated 'alive cells' counter, it will be updated when user draws or erases cells.
+
 ### 0.5.0 (5/11/2011)
 * Added draw and remove cells from the field with the mouse-click feature. To draw new cells on the black part of the field and drag; to erase alive cell from the field click on it, dragging mouse in that state will also erase other cells.
 
