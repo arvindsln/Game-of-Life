@@ -108,18 +108,16 @@ public interface Constants {
 	 */
 	public static final int BORDER = 2;
 
+
 	/**
 	 * Main frame height ({@value})
 	 */
-	public static final int FRAME_HEIGHT = IMAGE_HEIGHT + BUTTON_HEIGHT + BORDER + 37; // ROWS default:677
-															//37 is magic number?
+	public static final int FRAME_HEIGHT = IMAGE_HEIGHT + BUTTON_HEIGHT + BORDER + 37; // ROWS default:677 37 is magic number?
 
 	/**
 	 * Main frame width ({@value})
 	 */
-	public static final int FRAME_WIDTH = IMAGE_WIDTH + BORDER*2 + 6; // COLS default:1016
-															//6 is magic number?
-
+	public static final int FRAME_WIDTH = IMAGE_WIDTH + BORDER*2 + 6; // COLS default:1016 6 is magic number?
 
 	/*****************************************
 	 * STATE
