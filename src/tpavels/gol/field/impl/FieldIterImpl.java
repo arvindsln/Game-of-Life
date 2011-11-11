@@ -8,13 +8,13 @@ import tpavels.gol.field.FieldIter;
 
 
 public class FieldIterImpl<E> implements FieldIter<Cell> {
-	
+
 	private Cell currentCell = null;
 	private FieldImpl fieldImpl = null;
-	
+
 	private int nextRow;
 	private int nextColumn;
-	
+
 	/**
 	 * Set iterator start points to {@link Constants#START_POINT}
 	 * and initialize {@link Field} to work with
@@ -25,7 +25,7 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 		nextRow = START_POINT;
 		nextColumn = START_POINT;
 	}
-	
+
 	@Override
 	public boolean hasNext() {
 		boolean isBottomRight = ((nextColumn >= COLS-1) && (nextRow >= ROWS) || (nextRow >= ROWS));
@@ -49,19 +49,19 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 			nextCell();
 			return currentCell;
 		}
-			return null;
+		return null;
 	}
 
 	@Override
 	public void remove() {
 		System.err.println("iterator.remove() is not implemented");
 	}
-	
+
 	@Override
 	public void setDead() {
-		fieldImpl.setDead(currentCell);	
+		fieldImpl.setDead(currentCell);
 	}
-	
+
 	@Override
 	public void setLife() {
 		fieldImpl.setLife(currentCell);
@@ -69,17 +69,20 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 
 	@Override
 	public String toString() {
-		if (currentCell == null) return "EMPTY";
-		else return currentCell.toString();
+		if (currentCell == null) {
+			return "EMPTY";
+		} else {
+			return currentCell.toString();
+		}
 	}
-	
+
 	/**
 	 * Iterator helper. </br>
-	 * Sets iterators next coordinates to next cell. 
+	 * Sets iterators next coordinates to next cell.
 	 * Goes left to right, up to down. When at the right border of field,
 	 * goes down by one row and starts the row from beginning (column 0).
 	 * Must be used together with {@link #hasNext()}, this method
-	 * doesn't check rows number. 
+	 * doesn't check rows number.
 	 */
 	private void nextCell() {
 		if (nextColumn != COLS-1) {
@@ -89,7 +92,7 @@ public class FieldIterImpl<E> implements FieldIter<Cell> {
 			nextColumn = START_POINT;
 		}
 	}
-	
-	
+
+
 
 }

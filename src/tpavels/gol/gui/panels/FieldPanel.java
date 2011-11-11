@@ -27,12 +27,12 @@ public class FieldPanel extends JPanel implements Constants {
 	private static final int FPS_Y = 20;
 	private static final int FPS_X = 5;
 	private static final int FONT_SIZE = 20;
-	private boolean showFPS = true; 
-	
+	private boolean showFPS = true;
+
 	private Field field;
 	private Core game;
 	private ControlsPanel controls;
-	
+
 	public FieldPanel(JPanel container, Core game, final Field field, ControlsPanel controlsPanel) {
 		this.field = field;
 		this.game = game;
@@ -42,21 +42,22 @@ public class FieldPanel extends JPanel implements Constants {
 		addMouseListener(mouseHandler);
 		addMouseMotionListener(mouseHandler);
 	}
-	
-	
+
+
 	private Image fieldImage = null;
 	private Graphics2D gfx2D = (Graphics2D) this.getGraphics();
-	
+
 	public void gameRender() {
-		if (fieldImage == null) { 
+		if (fieldImage == null) {
 			fieldImage = createImage(IMAGE_WIDTH, IMAGE_HEIGHT);
 			if (fieldImage == null) {
 				System.err.println("Field Image is null");
 				return;
-			} else
+			} else {
 				gfx2D = (Graphics2D) fieldImage.getGraphics();
+			}
 		}
-		
+
 		drawBackgound(DEAD_COLOUR);
 
 		Iterator<Cell> cellsToDraw = field.getAliveCells().iterator();
@@ -68,13 +69,13 @@ public class FieldPanel extends JPanel implements Constants {
 				break;
 			default:
 
-			   break;
+				break;
 			}
 			int cols = (cell.getColumn() * CELL_SIZE_INT);
 			int rows = (cell.getRow() * CELL_SIZE_INT);
 			gfx2D.fill(new Rectangle2D.Double(cols, rows, CELL_SIZE_DRAW, CELL_SIZE_DRAW));
 		}
-		
+
 		drawFPS();
 	}
 
@@ -113,16 +114,16 @@ public class FieldPanel extends JPanel implements Constants {
 			System.err.println("Graphics context error: " + e);
 		}
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
-		/*  
+		/*
 		 * needs to be overridden for cases when
 		 * main frame loses focus, hidden, moved or others.
-		 */ 
+		 */
 		paintComponents(g);
 	}
-	
+
 	@Override
 	public void paintComponents(Graphics g) {
 		super.paintComponents(g);
@@ -132,10 +133,10 @@ public class FieldPanel extends JPanel implements Constants {
 	}
 
 	private static final long serialVersionUID = -6629202213300350819L;
-	
+
 	private boolean alive = false;
 	private MouseAdapter mouseHandler = new MouseAdapter() {
-		
+
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			alive = false;
@@ -156,28 +157,28 @@ public class FieldPanel extends JPanel implements Constants {
 		}
 
 	};
-	
+
 	private boolean isField(MouseEvent e) {
 		int rowY = e.getY();
 		int columnX = e.getX();
-		return (rowY >= START_POINT && rowY < IMAGE_HEIGHT) && 
+		return (rowY >= START_POINT && rowY < IMAGE_HEIGHT) &&
 				(columnX < IMAGE_WIDTH && columnX >= START_POINT);
 	}
 
 	private void pauseGame() {
 		game.pause();
 		//FIXME do it more correctly (?)
-		// change button functional name 
+		// change button functional name
 		List<JButton> buttons = controls.getbuttons();
 		if (buttons.get(ControlsPanel.START_ID).getText().equals(ControlsPanel.PAUSE)){
 			buttons.get(ControlsPanel.START_ID).setText(ControlsPanel.RESUME);
 		}
 	}
-	
+
 	private boolean isAlive(MouseEvent e) {
 		if (isField(e)) {
-			int row = (int) (e.getY() / CELL_SIZE_INT);
-			int column = (int) (e.getX() / CELL_SIZE_INT);
+			int row = (e.getY() / CELL_SIZE_INT);
+			int column = (e.getX() / CELL_SIZE_INT);
 			if (field.getCell(row, column).isAlive()) {
 				return true;
 			} else {
@@ -190,8 +191,8 @@ public class FieldPanel extends JPanel implements Constants {
 
 	private void drawCellWithMouse(MouseEvent e) {
 		if (isField(e)) {
-			int row = (int) (e.getY() / CELL_SIZE_INT);
-			int column = (int) (e.getX() / CELL_SIZE_INT);
+			int row = (e.getY() / CELL_SIZE_INT);
+			int column = (e.getX() / CELL_SIZE_INT);
 			if (!alive && field.getCell(row, column).isDead()) {
 				field.addAliveCell(row, column);
 				gameRender();

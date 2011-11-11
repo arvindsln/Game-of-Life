@@ -13,18 +13,18 @@ public class CellImpl implements Constants, Cell{
 	private int row;
 	private int column;
 	private int neighbours;
-	
+
 	/**
 	 * Initialize new Cell
 	 * @param row cell ROW on the {@link Field}
-	 * @param column cell COLUMN on the {@link Field} 
+	 * @param column cell COLUMN on the {@link Field}
 	 */
 	public CellImpl(final int row, final int column){
 		this.state = CellState.DEAD;
 		this.neighbours = 0;
 		setCorrectCoordinates(row, column);
 	}
-	
+
 	@Override
 	public void resetNeighbourCounter() {
 		neighbours = 0;
@@ -47,7 +47,7 @@ public class CellImpl implements Constants, Cell{
 			System.err.println("ERRROR: neighbours cannot be negative - "+neighbours+" "+this.toString());
 		}
 	}
-	
+
 	// lazy initialization
 	private volatile Set<Cell> neighbourCells = null;
 	@Override
@@ -65,57 +65,57 @@ public class CellImpl implements Constants, Cell{
 		}
 		return neighbourCells;
 	}
-	
+
 	@Override
 	public int getRow(){
 		return row;
 	}
-	
+
 	@Override
 	public int getColumn(){
 		return column;
 	}
-	
+
 	@Override
 	public CellState getState(){
 		return state;
 	}
-	
+
 	@Override
 	public void setDead(){
 		state = CellState.DEAD;
 	}
-	
+
 	@Override
 	public void setLife(){
 		state = CellState.LIFE;
 	}
-	
+
 	@Override
 	public void setBorn(){
 		state = CellState.toBeLIFE;
 	}
-	
+
 	@Override
 	public void setDying(){
 		state = CellState.toBeDEAD;
 	}
-	
+
 	@Override
 	public boolean isAlive(){
 		return state.equals(CellState.LIFE);
 	}
-	
+
 	@Override
 	public boolean isDead(){
 		return state.equals(CellState.DEAD);
 	}
-	
+
 	@Override
 	public boolean isDying(){
 		return state.equals(CellState.toBeDEAD);
 	}
-	
+
 	@Override
 	public boolean isBorn(){
 		return state.equals(CellState.toBeLIFE);
@@ -123,14 +123,14 @@ public class CellImpl implements Constants, Cell{
 
 	@Override
 	public String toString() {
-		return "State: " + state.toString() + "; row: " + row + ", column: " + column; 
+		return "State: " + state.toString() + "; row: " + row + ", column: " + column;
 	}
 
 	@Override
 	public int getNeighbour() {
 		return neighbours;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 27;
@@ -142,32 +142,45 @@ public class CellImpl implements Constants, Cell{
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		CellImpl other = (CellImpl) obj;
-		if (this.row != other.row)
+		if (this.row != other.row) {
 			return false;
-		if (this.column != other.column)
+		}
+		if (this.column != other.column) {
 			return false;
+		}
 		return true;
 	}
-	
+
 	private void setCorrectCoordinates(int row, int column) {
-		boolean noBordersAround  = (row > START_POINT && row < ROWS-1) 
+		boolean noBordersAround  = (row > START_POINT && row < ROWS-1)
 				&& (column > START_POINT && column < COLS-1);
-		
+
 		if (!noBordersAround){
-			if (row < START_POINT) row = ROWS - 1;
-			if (column < START_POINT) column = COLS - 1;
-			
-			if (row >= ROWS) row = START_POINT;
-			if (column >= COLS) column = START_POINT;
+			if (row < START_POINT) {
+				row = ROWS - 1;
+			}
+			if (column < START_POINT) {
+				column = COLS - 1;
+			}
+
+			if (row >= ROWS) {
+				row = START_POINT;
+			}
+			if (column >= COLS) {
+				column = START_POINT;
+			}
 		}
-		
+
 		this.row = row;
 		this.column = column;
 	}

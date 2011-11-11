@@ -6,13 +6,13 @@ import tpavels.gol.field.Cell;
 import tpavels.gol.field.impl.FieldImpl;
 
 public class FieldImplTest extends TestCase implements Constants {
-	
+
 	FieldImpl field;
-	
+
 	public void setUp() throws Exception {
 		this.field = new FieldImpl();
 	}
-	
+
 	public void testCreateField(){
 		for(int i = 0; i < ROWS; i++){
 			for(int j = 0; j < COLS; j++){
@@ -28,7 +28,7 @@ public class FieldImplTest extends TestCase implements Constants {
 	public void testClearField() {
 		Cell cell1 = field.getCell(START_POINT+2, START_POINT+3);
 		field.setLife(cell1);
-		
+
 		for(int i = 0; i < ROWS; i++){
 			for(int j = 0; j < COLS; j++){
 				Cell cell = field.getCell(i, j);
@@ -37,9 +37,9 @@ public class FieldImplTest extends TestCase implements Constants {
 				}
 			}
 		}
-		
+
 		field.clearField();
-		
+
 		for(int i = 0; i < ROWS; i++){
 			for(int j = 0; j < COLS; j++){
 				Cell cell = field.getCell(i, j);
@@ -50,7 +50,7 @@ public class FieldImplTest extends TestCase implements Constants {
 			}
 		}
 	}
-	
+
 	public void testRandom() {
 		field.clearField();
 		field.createRandomLifeCells(5);
@@ -65,13 +65,13 @@ public class FieldImplTest extends TestCase implements Constants {
 		}
 		assertTrue("There are " + counter + " LIFE cells! Have to be only 5!", counter == 5);
 	}
-	
+
 	public void testAliveCells() {
 		field.clearField();
 		field.createRandomLifeCells(4);
 		assertTrue("There have to be only 4 alive cells!", field.getNumberOfAliveCells() == 4);
 	}
-	
+
 	public void testNextGenerationOneCellAllisDead() {
 		field.clearField();
 		field.createRandomLifeCells(1);
@@ -79,7 +79,7 @@ public class FieldImplTest extends TestCase implements Constants {
 		field.nextGeneration();
 		assertTrue("Not all cells are dead!", field.getNumberOfAliveCells() == 0);
 	}
-	
+
 	public void testNextGenerationThreeCellNewBorn() {
 		field.clearField();
 		field.addAliveCell(1, 1);
@@ -88,10 +88,10 @@ public class FieldImplTest extends TestCase implements Constants {
 		assertTrue("There have to be only three cells!", field.getNumberOfAliveCells() == 3);
 		field.nextGeneration();
 		assertTrue("New cell is not born! There have to be only 4 cells on the filed!",
-					field.getNumberOfAliveCells() == 4);
+				field.getNumberOfAliveCells() == 4);
 		assertTrue("This cell is not newbown!", field.getCell(2, 2).isAlive());
 	}
-	
+
 	public void testNextGenerationOneDiesFourBorn() {
 		field.clearField();
 		field.addAliveCell(1, 1);
@@ -107,7 +107,7 @@ public class FieldImplTest extends TestCase implements Constants {
 		assertTrue("Three - has to be alive", field.getCell(3, 2).isAlive());
 		assertTrue("Four - has to be alive", field.getCell(2, 1).isAlive());
 	}
-	
-	
-	
+
+
+
 }

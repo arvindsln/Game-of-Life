@@ -10,12 +10,12 @@ import tpavels.gol.gui.impl.GUIManagerImpl;
 
 
 public class CoreImpl implements Core {
-	
+
 	private Field field = new FieldImpl();
 	private GUIManager guiManager = null;
 	private GameState state = null;
 	private long delay = TICK;
-	
+
 	@Override
 	public void startup() {
 		field = new FieldImpl();
@@ -23,17 +23,17 @@ public class CoreImpl implements Core {
 		renderGUI();
 		lifeLoop();
 	}
-	
+
 	@Override
 	public void start() {
 		state = GameState.RUN;
 	}
-	
+
 	@Override
 	public void pause() {
 		state = GameState.PAUSE;
 	}
-	
+
 	@Override
 	public void random() {
 		state = GameState.RANDOM;
@@ -55,7 +55,7 @@ public class CoreImpl implements Core {
 	public void step() {
 		state = GameState.STEP;
 	}
-	
+
 	@Override
 	public void setDelay(long delay) {
 		this.delay = delay;
@@ -68,7 +68,7 @@ public class CoreImpl implements Core {
 		str.append(field.toString());
 		return str.toString();
 	}
-	
+
 	private void renderGUI() {
 		guiManager = new GUIManagerImpl(this, field);
 		guiManager.show();
@@ -101,10 +101,12 @@ public class CoreImpl implements Core {
 		guiManager.reDraw();
 		pause();
 	}
-	
+
 	private void doRun() {
 		boolean isNextGeneration = field.nextGeneration();
-		if (!isNextGeneration) doEnd();
+		if (!isNextGeneration) {
+			doEnd();
+		}
 		guiManager.reDraw();
 		try {
 			TimeUnit.MILLISECONDS.sleep(delay);
@@ -119,15 +121,17 @@ public class CoreImpl implements Core {
 
 	private void doStep() {
 		boolean isNextGeneration = field.nextGeneration();
-		if (!isNextGeneration) doEnd();
+		if (!isNextGeneration) {
+			doEnd();
+		}
 		guiManager.reDraw();
 		pause();
 	}
 
 	private void doEnd() {
 		guiManager.reDraw();
-		pause();		
+		pause();
 	}
-	
-	
+
+
 }

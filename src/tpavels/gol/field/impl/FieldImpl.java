@@ -45,9 +45,13 @@ public class FieldImpl implements Field {
 
 	@Override
 	public void createRandomLifeCells(int cellsToCreate) {
-		
-		if (isCellLimit(cellsToCreate)) return;
-		if (cellsToCreate < 0) cellsToCreate = NUMBER_RANDOM_CELLS;
+
+		if (isCellLimit(cellsToCreate)) {
+			return;
+		}
+		if (cellsToCreate < 0) {
+			cellsToCreate = NUMBER_RANDOM_CELLS;
+		}
 		Random randomXGenerator = new Random();
 		Random randomYGenerator = new Random();
 		int randomRow, randomColumn;
@@ -60,7 +64,7 @@ public class FieldImpl implements Field {
 			} while (cell.isAlive());
 			addCell(cell);
 		}
-		
+
 	}
 
 	@Override
@@ -77,13 +81,13 @@ public class FieldImpl implements Field {
 	public FieldIter<Cell> iterator() {
 		return new FieldIterImpl<Cell>(this);
 	}
-	
+
 	@Override
 	public void addAliveCell(int row, int column) {
 		Cell cell = getCell(row, column);
 		addCell(cell);
 	}
-	
+
 	@Override
 	public void removeAliveCell(int row, int column) {
 		Cell cell = getCell(row, column);
@@ -94,16 +98,16 @@ public class FieldImpl implements Field {
 	public int getGeneration() {
 		return generation;
 	}
-	
+
 	@Override
 	public boolean nextGeneration() {
-	/* 
-	 * 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-	 * 2. Any live cell with two or three live neighbours lives on to the next generation.
-	 * 3. Any live cell with more than three live neighbours dies, as if by overcrowding.
-	 * 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
-	 */
-		
+		/*
+		 * 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+		 * 2. Any live cell with two or three live neighbours lives on to the next generation.
+		 * 3. Any live cell with more than three live neighbours dies, as if by overcrowding.
+		 * 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
+		 */
+
 		int neighbours = 0;
 		FieldIter<Cell> fieldIter = this.iterator();
 		if(fieldIter.isEmpty()) {
@@ -114,31 +118,38 @@ public class FieldImpl implements Field {
 			Cell cell = fieldIter.next();
 			neighbours = cell.getNeighbour();
 			if (cell.isDead()) {
-				if (neighbours == 3) setLife(cell);
+				if (neighbours == 3) {
+					setLife(cell);
+				}
 			} else {
-				if (neighbours < 2) setDead(cell);
-				else if (neighbours  > 3) setDead(cell);
+				if (neighbours < 2) {
+					setDead(cell);
+				} else if (neighbours  > 3) {
+					setDead(cell);
+				}
 			}
 		}
 		boolean isNewGeneration = updateChanges();
 		if (isNewGeneration){
-			generation ++; 
+			generation ++;
 			return true;
-		} else return false;
+		} else {
+			return false;
+		}
 	}
-	
+
 	/**
-	 * Get {@link Cell} from board. Left and right edges of the {@link Field} are stitched together, 
-	 * and the top and bottom edges also. 
-	 * 
-	 * @param row field row 
-	 * @param column field column 
+	 * Get {@link Cell} from board. Left and right edges of the {@link Field} are stitched together,
+	 * and the top and bottom edges also.
+	 *
+	 * @param row field row
+	 * @param column field column
 	 * @return Cell
 	 */
 	public Cell getCell(int row, int column) {
 		return field[row][column];
 	}
-	
+
 	/**
 	 * Set {@link Cell} to dying
 	 * @param cell Object to set
@@ -147,7 +158,7 @@ public class FieldImpl implements Field {
 	public void setDead(Cell cell) {
 		field[cell.getRow()][cell.getColumn()].setDying();
 	}
-	
+
 	/**
 	 * Set {@link Cell} to born
 	 * @param cell Object to set
@@ -181,7 +192,7 @@ public class FieldImpl implements Field {
 		}
 		return sbuf.toString();
 	}
-	
+
 	/**
 	 * Makes a cell alive and updates its neighbours, incrementing neighbour counter by 1
 	 * @param cell to make alive again
@@ -192,7 +203,7 @@ public class FieldImpl implements Field {
 		addNeighbours(cell);
 		lifecells.add(cell);
 	}
-	
+
 	/**
 	 * Kills cells and updates its neighbours, decrementing neighbour counter by 1
 	 * @param cell
@@ -206,7 +217,7 @@ public class FieldImpl implements Field {
 
 	/**
 	 * When a cell is reborn all its neighbours cell neighbour counter need to be incremented by 1
-	 * @param cell that was born in the neighborhood 
+	 * @param cell that was born in the neighborhood
 	 */
 	private void addNeighbours(Cell cell) {
 
@@ -218,8 +229,8 @@ public class FieldImpl implements Field {
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * When a cell is dead all its neighbours cell neighbour counter need to be decremented by 1
 	 * @param cell
@@ -232,7 +243,7 @@ public class FieldImpl implements Field {
 			next.removeNeighbour();
 		}
 	}
-	
+
 	/**
 	 * Creates new cells objects on the field and set them to dead
 	 */
@@ -254,7 +265,7 @@ public class FieldImpl implements Field {
 		int canHold = CAN_HOLD_CELLS - getNumberOfAliveCells();
 		// no more then field can hold
 		if (cellsToCreate > canHold) {
-			System.err.println("Field cannot revive more cells. There are " 
+			System.err.println("Field cannot revive more cells. There are "
 					+ getNumberOfAliveCells() + " alive cell; want to create "
 					+ cellsToCreate + " more cells, but field can hold "+ canHold );
 			setAlltoLife();
@@ -262,7 +273,7 @@ public class FieldImpl implements Field {
 		}
 		return false;
 	}
-	
+
 
 	/**
 	 * RandomLifeCells helper, revive all remaining cells on the field
@@ -276,9 +287,9 @@ public class FieldImpl implements Field {
 			}
 		}
 	}
-	
+
 	/**
-	 * Updates all changes to the field. 
+	 * Updates all changes to the field.
 	 * Sets all dying cells to dead one,
 	 * all born to alive
 	 * @return true if at least one cell is changed
@@ -287,25 +298,25 @@ public class FieldImpl implements Field {
 		boolean updated = false;
 		for(int row = 0; row < ROWS; row++){
 			for(int column = 0; column < COLS; column++){
-					Cell currentCell = field[row][column];
-					switch(currentCell.getState()){
-					case toBeDEAD:
-						removeCell(currentCell);
-						updated = true;
-						break;
-					case toBeLIFE:
-						addCell(currentCell);
-						updated = true;
-						break;
-					case DEAD:
-						// do nothing
-						break;
-					case LIFE:
-						// do nothing
-						break;
-					}
+				Cell currentCell = field[row][column];
+				switch(currentCell.getState()){
+				case toBeDEAD:
+					removeCell(currentCell);
+					updated = true;
+					break;
+				case toBeLIFE:
+					addCell(currentCell);
+					updated = true;
+					break;
+				case DEAD:
+					// do nothing
+					break;
+				case LIFE:
+					// do nothing
+					break;
 				}
 			}
+		}
 		return updated;
 	}
 

@@ -9,37 +9,37 @@ import tpavels.gol.field.Field;
 import tpavels.gol.gui.GUIManager;
 
 public class GUIManagerImpl implements Constants, GUIManager {
-	
+
 	private Core game = null;
 	private Field field = null;
 	private MainGUIframe mainUIframe = null;
-	
+
 	public GUIManagerImpl(Core game, Field field) {
 		this.game = game;
 		this.field = field;
 	}
-	
+
 	@Override
 	public void show() {
 		setupLookAndFeel();
 		startMainGUI();
 	}
-	
+
 	@Override
 	public void reDraw(){
 		mainUIframe.reDraw(field);
 	}
-	
+
 	private void startMainGUI() {
 		mainUIframe = new MainGUIframe();
 		mainUIframe.createGUI(game, field);
 		reDraw();
 	}
-	
+
 	private void setupLookAndFeel() {
 		String nativeLF = UIManager.getSystemLookAndFeelClassName();
 
-	    try {
+		try {
 			UIManager.setLookAndFeel(nativeLF);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

@@ -21,24 +21,24 @@ import tpavels.gol.field.Field;
 import tpavels.gol.gui.impl.MainGUIframe;
 
 public class ControlsPanel implements ActionListener, Constants{
-	
-	
+
+
 	// four control button, ID is used to address them in the buttons list
 	public static final int START_ID = 0;
 	public static final String START = "START";
 	public static final String PAUSE = "PAUSE";
 	public static final String RESUME = "RESUME";
-	
+
 	public static final int RANDOM_ID = 1;
 	public static final String RANDOM = "RANDOM("+NUMBER_RANDOM_CELLS+")";
-	
+
 	public static final int RESET_ID = 2;
 	public static final String RESET = "RESET";
-	
+
 	public static final int STEP_ID = 3;
 	public static final String STEP = "STEP";
-	
-	
+
+
 	/**
 	 * Holds all control buttons
 	 * {0:START, 1:RANDOM, 2:RESET, 3:STEP}
@@ -47,67 +47,67 @@ public class ControlsPanel implements ActionListener, Constants{
 	private Core game = null;
 	private SliderPanel slider = null;
 	private InfoPanel infoPanel = null;
-	
+
 	public ControlsPanel(final JPanel container, final Core game, final Field field) {
 		this.game = game;
 		this.slider = new SliderPanel(game);
 		this.infoPanel = new InfoPanel(field);
 		this.buttons = new ArrayList<JButton>();
-		
+
 		addKeyPresserListener(container);
 		createAllControlsButtons();
 		layoutComponents(container);
 	}
-	
+
 	public List<JButton> getbuttons() {
 		return buttons;
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
-		
-		 			//** START **//
+
+		//** START **//
 		if (e.getActionCommand().equals(START) || e.getActionCommand().equals(RESUME) ){
 			game.start();
-			
+
 			// this button is PAUSE now
 			buttons.get(START_ID).setText(PAUSE);
 			buttons.get(START_ID).setMnemonic('P');
 		}
-		
-					//** PAUSE **//
+
+		//** PAUSE **//
 		if (e.getActionCommand().equals(PAUSE)){
 			game.pause();
-			
+
 			// can resume
 			buttons.get(START_ID).setText(RESUME);
 			buttons.get(START_ID).setMnemonic('u');
 		}
-				
-		 			//** RANDOM **//
+
+		//** RANDOM **//
 		if (e.getActionCommand().equals(RANDOM)){
 			game.random();
-			
+
 			// game is set to pause
 			if (buttons.get(START_ID).getText().equals(PAUSE)){
 				buttons.get(START_ID).setText(RESUME);
 				buttons.get(START_ID).setMnemonic('u');
 			}
 		}
-		
-					//** RESET **//
+
+		//** RESET **//
 		if (e.getActionCommand().equals(RESET)){
 			game.reset();
 			slider.reset();
-			
+
 			// reset buttons at initial state
 			buttons.get(START_ID).setText(START);
 			buttons.get(START_ID).setMnemonic('S');
 		}
-		
-					//** STEP **//
+
+		//** STEP **//
 		if (e.getActionCommand().equals(STEP)){
 			game.step();
-			
+
 			// pause the main infinity loop
 			if (buttons.get(START_ID).getText().equals(PAUSE)){
 				buttons.get(START_ID).setText(RESUME);
@@ -119,7 +119,7 @@ public class ControlsPanel implements ActionListener, Constants{
 	/**
 	 * Update information on top of the control panels,
 	 * it will update two numbers: generation and alive cells
-	 * @param field 
+	 * @param field
 	 */
 	public void updateInfo(Field field) {
 		infoPanel.updateLabels(field);
@@ -131,9 +131,9 @@ public class ControlsPanel implements ActionListener, Constants{
 		for (Frame frame : frames) {
 			frame.addKeyListener(keyAdapter);
 		}
-		
+
 	}
-	
+
 	private void createAllControlsButtons(){
 
 		JButton start, step, random, reset;
@@ -141,32 +141,32 @@ public class ControlsPanel implements ActionListener, Constants{
 		start.setEnabled(true);
 		start.setMnemonic('S');
 		buttons.add(start);
-		
+
 		random = createButton(RANDOM);
 		random.setEnabled(true);
 		random.setMnemonic('R');
 		buttons.add(random);
-		
+
 		reset = createButton(RESET);
 		reset.setMnemonic('e');
 		reset.setEnabled(true);
 		buttons.add(reset);
-		
+
 		step = createButton(STEP);
 		step.setMnemonic('t');
 		buttons.add(step);
 		step.setEnabled(true);
-		
+
 		for (JButton bttn : buttons) {
 			/*
 			 * Done to enable shortcuts
 			 * When a button is in focus shortcuts aren't working
 			 */
-			bttn.setFocusable(false); 
+			bttn.setFocusable(false);
 			bttn.setBackground(CONTROL_PANEL_COLOUR);
 		}
 	}
-	
+
 	private JButton createButton(final String name) {
 		JButton button = new JButton(name);
 		button.setVisible(true);
@@ -175,23 +175,23 @@ public class ControlsPanel implements ActionListener, Constants{
 		button.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
 		return button;
 	}
-	
+
 	private void layoutComponents(final JPanel container) {
-		
-		 // Empty JPanel is needed to center(?) others components
+
+		// Empty JPanel is needed to center(?) others components
 		JPanel emptyPanel = new JPanel();
 		emptyPanel.setForeground(CONTROL_PANEL_COLOUR);
 		emptyPanel.setBackground(CONTROL_PANEL_COLOUR);
-		
+
 		MainGUIframe.addUIComponent(container, emptyPanel, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
 				new int[] {1,0,1,1}, new Insets(0, BORDER, 0, BORDER));
-		
+
 		MainGUIframe.addUIComponent(container, infoPanel, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
 				new int[] {2,0,1,1}, new Insets(0, BORDER, 0, BORDER));
-		
+
 		MainGUIframe.addUIComponent(container, slider, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
 				new int[] {3,0,1,1}, new Insets(0, BORDER, 0, BORDER));
-		
+
 		MainGUIframe.addUIComponent(container, buttons.get(START_ID), GridBagConstraints.WEST, GridBagConstraints.NONE,
 				new int[] {4,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		MainGUIframe.addUIComponent(container, buttons.get(RANDOM_ID), GridBagConstraints.WEST, GridBagConstraints.NONE,
@@ -200,13 +200,13 @@ public class ControlsPanel implements ActionListener, Constants{
 				new int[] {6,0,1,1}, new Insets(0, BORDER, 0, BORDER));
 		MainGUIframe.addUIComponent(container, buttons.get(STEP_ID), GridBagConstraints.WEST, GridBagConstraints.NONE,
 				new int[] {7,0,1,1}, new Insets(0, BORDER, 0, BORDER));
-		
+
 		MainGUIframe.addUIComponent(container, emptyPanel, GridBagConstraints.EAST, GridBagConstraints.NONE,
 				new int[] {8,0,1,1}, new Insets(0, BORDER, 0, BORDER));
-		
+
 		MainGUIframe.addUIComponent(container, infoPanel, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL,
 				new int[] {9,0,1,1}, new Insets(0, BORDER, 0, BORDER));
-		
+
 	}
 
 	private KeyAdapter keyAdapter = new KeyAdapter() {

@@ -70,30 +70,30 @@ public interface Cell extends Constants {
 	 *  but will be revived in the next
 	 */
 	public boolean isBorn();
-	
+
 	/**
 	 * @return set of all neighbour cells
 	 */
 	public Set<Cell> neighbourCells();
-	
+
 	/**
 	 * Adds new alive neighbour near cell
 	 */
 	public void addNeighbour();
-	
+
 	/**
 	 * Removes one alive neighbour near this cell
 	 */
 	public void removeNeighbour();
-	
+
 	/**
 	 * @return number of alive neighbours
 	 */
 	public int getNeighbour();
-	
+
 	/**
 	 * Sets alive neighbour counter to zero (0)
 	 */
 	public void resetNeighbourCounter();
-	
+
 }

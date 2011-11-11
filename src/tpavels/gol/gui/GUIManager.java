@@ -12,5 +12,5 @@ public interface GUIManager {
 	 */
 	public void reDraw();
 
-	
+
 }
